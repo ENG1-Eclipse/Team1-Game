@@ -21,8 +21,13 @@ public class PlayerTest implements Screen {
     private Animation<TextureRegion> downAnimation;
     private float time = 0f;
     private Animation<TextureRegion> idleAnimation;
+    private  Animation<TextureRegion> upAnimation;
+    private  Animation<TextureRegion> rightAnimation;
+    private  Animation<TextureRegion> leftAnimation;
     public SpriteBatch batch;
-
+    public float xPos = 0;
+    public float yPos = 0;
+    public float speed = 5;
     MainGame game;
     public PlayerTest (MainGame game) {
         this.game = game;
@@ -37,12 +42,23 @@ public class PlayerTest implements Screen {
 
         if(Gdx.input.isKeyPressed(Input.Keys.S)) {
             textureRegion = downAnimation.getKeyFrame(time);
+            yPos-=speed;
+        }
+        else if(Gdx.input.isKeyPressed(Input.Keys.W)){
+            textureRegion = upAnimation.getKeyFrame(time);
+            yPos += speed;
+        }else if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            textureRegion = rightAnimation.getKeyFrame(time);
+            xPos+=speed;
+        }else if(Gdx.input.isKeyPressed(Input.Keys.A)){
+            textureRegion = leftAnimation.getKeyFrame(time);
+            xPos -=speed;
         }
         else{
             textureRegion = idleAnimation.getKeyFrame(time);
         }
         batch.begin();
-        batch.draw(textureRegion,0,0);
+        batch.draw(textureRegion,xPos,yPos,100,100);
 
         batch.end();
 
@@ -53,7 +69,11 @@ public class PlayerTest implements Screen {
 
         batch = new SpriteBatch();
         textureAtlas = new TextureAtlas(Gdx.files.internal("player/player.atlas"));
-        downAnimation = new Animation<TextureRegion>(0.05f, textureAtlas.findRegions("down"), Animation.PlayMode.LOOP_PINGPONG);
+        downAnimation = new Animation<TextureRegion>(0.08f, textureAtlas.findRegions("down"), Animation.PlayMode.LOOP_PINGPONG);
+        upAnimation = new Animation<TextureRegion>(0.08f, textureAtlas.findRegions("up"), Animation.PlayMode.LOOP_PINGPONG);
+        rightAnimation = new Animation<TextureRegion>(0.1f, textureAtlas.findRegions("right"), Animation.PlayMode.LOOP_PINGPONG);
+        leftAnimation = new Animation<TextureRegion>(0.1f, textureAtlas.findRegions("left"), Animation.PlayMode.LOOP_PINGPONG);
+
         idleAnimation = new Animation<TextureRegion>(0.25f, textureAtlas.findRegions("player_idle"), Animation.PlayMode.LOOP_PINGPONG);
     }
 

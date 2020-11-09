@@ -53,7 +53,7 @@ public class MainMenuScreen implements Screen {
                 600 - Gdx.input.getY() < y1+P_Y && 600 - Gdx.input.getY() > y1  ) {
             game.batch.draw(Play_Button_active, x, y1);
             if (Gdx.input.isTouched()){
-                game.setScreen(new PlayScreen(game));
+                game.setScreen(new PlayerTest(game));
             }
         } else {
             game.batch.draw(Play_Button_inactive, x, y1);
