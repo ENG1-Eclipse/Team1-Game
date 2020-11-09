@@ -14,6 +14,7 @@ public class DesktopLauncher {
 		config.height = MainGame.Game_Height;
 		config.title = "Team1Game";
 		config.resizable = true;
+		config.fullscreen = true;
 
 		new LwjglApplication(new MainGame(), config);
 	}
