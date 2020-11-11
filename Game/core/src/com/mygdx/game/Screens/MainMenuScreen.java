@@ -3,11 +3,10 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+
+import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.MainGame;
 
 public class MainMenuScreen implements Screen {
@@ -78,7 +77,13 @@ public class MainMenuScreen implements Screen {
                 MainGame.Game_Height - Gdx.input.getY() > y1  ) {
             game.batch.draw(Settings_Button_active, x, y1);
             if (Gdx.input.isTouched()){
-                game.setScreen(new SettingsScreen(game));
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        game.setScreen(new SettingsScreen(game));;
+                    }
+                }, 1);
+
             }
         } else {
             game.batch.draw(Settings_Button_inactive, x, y1);

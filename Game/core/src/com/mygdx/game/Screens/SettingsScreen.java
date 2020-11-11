@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.Timer;
 import com.mygdx.game.MainGame;
 import sun.rmi.rmic.Main;
 
@@ -18,7 +19,7 @@ public class SettingsScreen implements Screen {
 
     private Stage stage;
 
-    Table table = new Table();
+    private Table table;
 
 
 
@@ -33,6 +34,8 @@ public class SettingsScreen implements Screen {
     public SettingsScreen (MainGame game) {
         this.game = game;
 
+
+        table = new Table();
         stage = new Stage();
         table.setFillParent(true);
         stage.addActor(table);
@@ -76,7 +79,13 @@ public class SettingsScreen implements Screen {
                 MainGame.Game_Height - Gdx.input.getY() > y1  ) {
             game.batch.draw(Exit_Button_active, x, y1);
             if (Gdx.input.isTouched()){
-                game.setScreen(new MainMenuScreen(game));
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        game.setScreen(new MainMenuScreen(game));
+                    }
+                },1);
+
             }
         } else {
             game.batch.draw(Exit_Button_inactive, x, y1);

@@ -13,8 +13,6 @@ import com.mygdx.game.MainGame;
 import com.mygdx.game.Screens.MainMenuScreen;
 
 public class PlayerTest implements Screen {
-    public static final int Game_Width = 800;
-    public static final int Game_Height = 600;
     private TextureRegion textureRegion;
     private TextureAtlas textureAtlas;
     private Sprite sprite;
@@ -36,7 +34,9 @@ public class PlayerTest implements Screen {
 
     @Override
     public void render (float delta) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+
+        Gdx.gl.glClearColor(0, 0, 0.06f, 1);
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         time += delta;
 
@@ -57,17 +57,17 @@ public class PlayerTest implements Screen {
         else{
             textureRegion = idleAnimation.getKeyFrame(time);
         }
-        batch.begin();
-        batch.draw(textureRegion,xPos,yPos,100,100);
+        game.batch.begin();
+        game.batch.draw(textureRegion,xPos,yPos,100,100);
 
-        batch.end();
+        game.batch.end();
 
     }
 
     @Override
     public void show() {
 
-        batch = new SpriteBatch();
+
         textureAtlas = new TextureAtlas(Gdx.files.internal("player/player.atlas"));
         downAnimation = new Animation<TextureRegion>(0.08f, textureAtlas.findRegions("down"), Animation.PlayMode.LOOP_PINGPONG);
         upAnimation = new Animation<TextureRegion>(0.08f, textureAtlas.findRegions("up"), Animation.PlayMode.LOOP_PINGPONG);
