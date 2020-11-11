@@ -27,6 +27,8 @@ public class MainMenuScreen implements Screen {
     Texture Exit_Button_active;
     Texture Settings_Button_inactive;
     Texture Settings_Button_active;
+    Texture backgroundTexture;
+    Texture logoTexture;
 
     MainGame game;
     public MainMenuScreen (MainGame game) {
@@ -38,13 +40,14 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-        Play_Button_inactive = new Texture("buttons/playwhite.png");
-        Play_Button_active = new Texture("buttons/playyellow.png");
-        Exit_Button_inactive = new Texture("buttons/exitwhite.png");
-        Exit_Button_active = new Texture("buttons/exityellow.png");
-        Settings_Button_inactive = new Texture("buttons/settingswhite.png");
-        Settings_Button_active = new Texture("buttons/settingsyellow.png");
-
+        Play_Button_inactive = new Texture("buttons/play_button.png");
+        Play_Button_active = new Texture("buttons/play_button_down.png");
+        Exit_Button_inactive = new Texture("buttons/exit_button.png");
+        Exit_Button_active = new Texture("buttons/exit_button_down.png");
+        Settings_Button_inactive = new Texture("buttons/settings_button.png");
+        Settings_Button_active = new Texture("buttons/settings_button_down.png");
+        backgroundTexture = new Texture("parallax-space-background.jpg");
+        logoTexture =  new Texture("AuberLogo.png");
     }
 
     @Override
@@ -52,11 +55,13 @@ public class MainMenuScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0.06f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         int x = MainGame.Game_Width / 2 - E_X / 2;
-        int y = MainGame.Game_Height / 6;
+        int y = MainGame.Game_Height / 10;
         int y1 = y * 2 + E_Y / 2 ;
         int y2 = 2 * y1 - y;
         game.batch.begin();
 
+        game.batch.draw(backgroundTexture, 0, 0, MainGame.Game_Width, MainGame.Game_Height);
+        game.batch.draw(logoTexture, MainGame.Game_Width / 2 - logoTexture.getWidth() / 2, MainGame.Game_Height - logoTexture.getHeight() * 16/13);
 
         if (Gdx.input.getX() < x + E_X && Gdx.input.getX() > x &&
                 MainGame.Game_Height - Gdx.input.getY() < y+E_Y &&

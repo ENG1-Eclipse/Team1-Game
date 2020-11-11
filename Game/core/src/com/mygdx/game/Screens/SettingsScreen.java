@@ -24,6 +24,9 @@ public class SettingsScreen implements Screen {
 
     Texture Resolution_inactive;
     Texture Resolution_active;
+    Texture Exit_Button_inactive;
+    Texture Exit_Button_active;
+    Texture backgroundTexture;
 
 
     MainGame game;
@@ -38,8 +41,11 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void show() {
-        Resolution_active = new Texture("buttons/resolutionyellow.png");
-        Resolution_inactive = new Texture("buttons/resolutionwhite.png");
+        Resolution_active = new Texture("buttons/resolution_button_down.png");
+        Resolution_inactive = new Texture("buttons/resolution_button.png");
+        Exit_Button_inactive = new Texture("buttons/exit_button.png");
+        Exit_Button_active = new Texture("buttons/exit_button_down.png");
+        backgroundTexture = new Texture("parallax-space-background.jpg");
 
     }
 
@@ -49,8 +55,12 @@ public class SettingsScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         int x = MainGame.Game_Width / 2 - R_X / 2;
         int y = MainGame.Game_Height / 2;
+        int y1 = MainGame.Game_Height / 4;
         stage.draw();
         game.batch.begin();
+
+        game.batch.draw(backgroundTexture, 0, 0, MainGame.Game_Width, MainGame.Game_Height);
+
         if (Gdx.input.getX() < x + R_X && Gdx.input.getX() > x &&
                 MainGame.Game_Height - Gdx.input.getY() < y+R_Y &&
                 MainGame.Game_Height - Gdx.input.getY() > y  ) {
@@ -60,6 +70,16 @@ public class SettingsScreen implements Screen {
             }
         } else {
             game.batch.draw(Resolution_inactive, x, y);
+        }
+        if (Gdx.input.getX() < x + R_X && Gdx.input.getX() > x &&
+                MainGame.Game_Height - Gdx.input.getY() < y1+R_Y &&
+                MainGame.Game_Height - Gdx.input.getY() > y1  ) {
+            game.batch.draw(Exit_Button_active, x, y1);
+            if (Gdx.input.isTouched()){
+                game.setScreen(new MainMenuScreen(game));
+            }
+        } else {
+            game.batch.draw(Exit_Button_inactive, x, y1);
         }
         game.batch.end();
 
