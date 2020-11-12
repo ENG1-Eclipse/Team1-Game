@@ -11,6 +11,8 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.mygdx.game.MainGame;
 import com.mygdx.game.Screens.MainMenuScreen;
 
+import java.awt.*;
+
 
 public class PlayerTest implements Screen {
     private TextureRegion textureRegion;
@@ -21,6 +23,8 @@ public class PlayerTest implements Screen {
     private  Animation<TextureRegion> upAnimation;
     private  Animation<TextureRegion> rightAnimation;
     private  Animation<TextureRegion> leftAnimation;
+    private  Animation<TextureRegion> teleportAnimation;
+    private  int teleportingState;
     public float xPos = 0;
     public float yPos = 0;
     public float speed = 5;
@@ -34,11 +38,6 @@ public class PlayerTest implements Screen {
     public PlayerTest (MainGame game) {
         this.game = game;
 
-
-
-
-
-
     }
 
     @Override
@@ -49,7 +48,23 @@ public class PlayerTest implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         time += delta;
 
-        if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+        if(teleportingState == 1 || teleportingState == 3){
+            //Teleportation animation is run. Once it is finished it changes the state,
+            textureRegion = teleportAnimation.getKeyFrame(time);
+            if(teleportAnimation.isAnimationFinished(time)){
+                if(teleportingState == 1){
+                    teleportingState = 2;
+                }else if(teleportingState == 3){
+                    teleportingState = 0;
+                }
+
+            }
+        }else if(Gdx.input.isKeyPressed(Input.Keys.E)) {
+            interact();
+        }else if(teleportingState == 2){
+            // Teleportation blocks all other inputs to stop the player moving around
+            textureRegion = textureAtlas.findRegion("blank");
+        }else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
             textureRegion = downAnimation.getKeyFrame(time);
             yPos-=speed;
         }
@@ -62,16 +77,54 @@ public class PlayerTest implements Screen {
         }else if(Gdx.input.isKeyPressed(Input.Keys.A)){
             textureRegion = leftAnimation.getKeyFrame(time);
             xPos -=speed;
-        }
-        else{
+        }else if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            quit();
+        }else{
             textureRegion = idleAnimation.getKeyFrame(time);
         }
+
         game.batch.begin();
         game.batch.draw(textureRegion,xPos,yPos,100,100);
 
         game.batch.end();
 
     }
+
+    public void interact(){
+        ;
+        //Temp teleport animation test
+        teleport();
+
+    }
+
+    public void setTelportState(int teleportState){
+        teleportingState = teleportState;
+    }
+
+    public void teleport(){
+        /*
+        teleportingStates
+            Not Teleporting = 0
+            Teleporting Out = 1
+            Blank           = 2
+            Teleporting In  = 3
+         */
+        if(teleportingState==0) {
+            teleportAnimation.setPlayMode(Animation.PlayMode.NORMAL);
+            teleportingState = 1;
+            time = 0f;
+        }else if (teleportingState == 2){
+            teleportingState = 3;
+            teleportAnimation.setPlayMode(Animation.PlayMode.REVERSED);
+            time = 0f;
+        }
+    }
+
+    public void quit(){
+        game.setScreen(new MainMenuScreen(game));
+        dispose();
+    }
+
 
     @Override
     public void show() {
@@ -84,6 +137,8 @@ public class PlayerTest implements Screen {
         leftAnimation = new Animation<TextureRegion>(0.1f, textureAtlas.findRegions("left"), Animation.PlayMode.LOOP_PINGPONG);
 
         idleAnimation = new Animation<TextureRegion>(0.25f, textureAtlas.findRegions("player_idle"), Animation.PlayMode.LOOP_PINGPONG);
+        teleportAnimation = new Animation<TextureRegion>(0.15f, textureAtlas.findRegions("teleport"), Animation.PlayMode.NORMAL);
+
     }
 
 
@@ -110,6 +165,5 @@ public class PlayerTest implements Screen {
     @Override
     public void dispose() {
         textureAtlas.dispose();
-
     }
 }

@@ -49,8 +49,6 @@ public class PlayScreen implements Screen {
         game.batch.draw(img, 0, 0);
         game.batch.end();
 
-
-
     }
 
     @Override
