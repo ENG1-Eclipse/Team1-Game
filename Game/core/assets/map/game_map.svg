@@ -9,9 +9,9 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="490.6189mm"
+   height="277.45828mm"
+   viewBox="0 0 490.6189 277.45828"
    version="1.1"
    id="svg8"
    inkscape:export-filename="D:\Downloads\mapstyle.png"
@@ -136,7 +136,9 @@
          x="0"
          y="0"
          xlink:href="#g1058"
-         id="use1064" />
+         id="use1064"
+         width="100%"
+         height="100%" />
     </clipPath>
     <clipPath
        clipPathUnits="userSpaceOnUse"
@@ -156,7 +158,9 @@
          x="0"
          y="0"
          xlink:href="#g1171"
-         id="use1177" />
+         id="use1177"
+         width="100%"
+         height="100%" />
     </clipPath>
     <clipPath
        clipPathUnits="userSpaceOnUse"
@@ -230,7 +234,9 @@
          x="0"
          y="0"
          xlink:href="#g1164"
-         id="use1170" />
+         id="use1170"
+         width="100%"
+         height="100%" />
     </clipPath>
     <clipPath
        clipPathUnits="userSpaceOnUse"
@@ -357,10 +363,10 @@
     </pattern>
     <inkscape:perspective
        sodipodi:type="inkscape:persp3d"
-       inkscape:vp_x="0 : 148.5 : 1"
-       inkscape:vp_y="0 : 1000 : 0"
-       inkscape:vp_z="210 : 148.5 : 1"
-       inkscape:persp3d-origin="105 : 99 : 1"
+       inkscape:vp_x="0 : 128.95827 : 1"
+       inkscape:vp_y="0 : 999.99993 : 0"
+       inkscape:vp_z="210.00001 : 128.95827 : 1"
+       inkscape:persp3d-origin="105 : 79.458277 : 1"
        id="perspective847" />
     <inkscape:path-effect
        effect="bspline"
@@ -1355,9 +1361,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4"
-     inkscape:cx="574.56284"
-     inkscape:cy="920.21953"
+     inkscape:zoom="0.35"
+     inkscape:cx="1480.4035"
+     inkscape:cy="598.12184"
      inkscape:document-units="mm"
      inkscape:current-layer="g6310-6"
      showgrid="true"
@@ -1377,7 +1383,9 @@
        visible="true"
        gridanglex="30"
        gridanglez="30"
-       enabled="true" />
+       enabled="true"
+       originx="215.09054"
+       originy="-12.770865" />
   </sodipodi:namedview>
   <metadata
      id="metadata5">
@@ -1394,7 +1402,8 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(215.09054,-12.770865)">
     <g
        id="g6310"
        transform="translate(-99.592921,92.5)">
@@ -12057,7 +12066,7 @@
          sodipodi:role="line"
          id="tspan8594">CREW</tspan><tspan
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.9824px;font-family:Ethnocentric;-inkscape-font-specification:Ethnocentric;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.0887455;stroke-opacity:1"
-         y="-114.33333"
+         y="-114.33334"
          x="105.26378"
          sodipodi:role="line"
          id="tspan8598">QUARTERS</tspan></text>
@@ -14142,7 +14151,7 @@
     </g>
     <path
        style="fill:#1a1a1a;stroke:#000000;stroke-width:0.298757px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m -180.13328,135 25.98076,3 0,10 -25.98076,4 v -17"
+       d="m -180.13328,135 25.98076,3 v 10 l -25.98076,4 v -17"
        id="path10334"
        sodipodi:nodetypes="ccccc" />
     <path
