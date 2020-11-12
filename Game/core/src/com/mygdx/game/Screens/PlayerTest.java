@@ -4,31 +4,40 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
-import com.badlogic.gdx.utils.Timer;
-import com.badlogic.gdx.utils.Timer.Task;
 import com.mygdx.game.MainGame;
 import com.mygdx.game.Screens.MainMenuScreen;
+
 
 public class PlayerTest implements Screen {
     private TextureRegion textureRegion;
     private TextureAtlas textureAtlas;
-    private Sprite sprite;
     private Animation<TextureRegion> downAnimation;
     private float time = 0f;
     private Animation<TextureRegion> idleAnimation;
     private  Animation<TextureRegion> upAnimation;
     private  Animation<TextureRegion> rightAnimation;
     private  Animation<TextureRegion> leftAnimation;
-    public SpriteBatch batch;
     public float xPos = 0;
     public float yPos = 0;
     public float speed = 5;
+
+
+
+
+
+
     MainGame game;
     public PlayerTest (MainGame game) {
         this.game = game;
+
+
+
+
+
 
     }
 
@@ -95,12 +104,12 @@ public class PlayerTest implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
-        game.batch.dispose();
+        textureAtlas.dispose();
 
     }
 }

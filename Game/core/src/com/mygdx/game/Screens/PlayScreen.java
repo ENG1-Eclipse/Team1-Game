@@ -5,9 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.math.Vector3;
+
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MainGame;
@@ -25,16 +23,19 @@ public class PlayScreen implements Screen {
     MainGame game;
     public PlayScreen (MainGame game) {
         this.game = game;
+
+
         gamecam = new OrthographicCamera();
         gamecam.position.set(MainGame.Game_Width/2,MainGame.Game_Height/2,0);
         gamePort = new FitViewport(MainGame.Game_Width,MainGame.Game_Height,gamecam);
         gamePort.apply();
 
+
     }
     @Override
     public void show() {
 
-        img = new Texture("badlogic.jpg");
+
     }
 
     @Override
@@ -54,7 +55,9 @@ public class PlayScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
+
         gamePort.update(width,height);
+        gamecam.update();
     }
 
     @Override
@@ -69,12 +72,12 @@ public class PlayScreen implements Screen {
 
     @Override
     public void hide() {
+        dispose();
 
     }
 
     @Override
     public void dispose() {
-        game.batch.dispose();
         img.dispose();
 
     }

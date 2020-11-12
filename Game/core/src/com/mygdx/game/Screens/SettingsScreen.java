@@ -5,11 +5,15 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.utils.Timer;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.mygdx.game.MainGame;
-import sun.rmi.rmic.Main;
 
 public class SettingsScreen implements Screen {
 
@@ -17,17 +21,17 @@ public class SettingsScreen implements Screen {
     private static final int R_Y = 150;
     private static final int R_X = 300;
 
+
     private Stage stage;
 
-    private Table table;
 
 
 
     Texture Resolution_inactive;
     Texture Resolution_active;
-    Texture Exit_Button_inactive;
-    Texture Exit_Button_active;
-    Texture backgroundTexture;
+    public static Texture Exit_Button_inactive;
+    public static Texture Exit_Button_active;
+    public static Texture backgroundTexture;
 
 
     MainGame game;
@@ -35,12 +39,9 @@ public class SettingsScreen implements Screen {
         this.game = game;
 
 
-        table = new Table();
-        stage = new Stage();
-        table.setFillParent(true);
-        stage.addActor(table);
-        Gdx.input.setInputProcessor(stage);
+
     }
+
 
     @Override
     public void show() {
@@ -50,6 +51,40 @@ public class SettingsScreen implements Screen {
         Exit_Button_active = new Texture("buttons/exit_button_down.png");
         backgroundTexture = new Texture("parallax-space-background.jpg");
 
+
+        stage = new Stage(new ScreenViewport());
+        final TextureRegion MyTextureRegion = new TextureRegion(Exit_Button_inactive);
+        Drawable drawable = new TextureRegionDrawable(MyTextureRegion);
+        final ImageButton Button = new ImageButton(drawable);
+        Button.setPosition(MainGame.Game_Width / 2 - R_X / 2,MainGame.Game_Height / 4);
+        Button.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+
+                ImageButton.ImageButtonStyle _oldStyle = Button.getStyle();
+                _oldStyle.imageUp = new TextureRegionDrawable(Exit_Button_active);
+                Button.setStyle(_oldStyle);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+
+                ImageButton.ImageButtonStyle _oldStyle = Button.getStyle();
+                _oldStyle.imageUp = new TextureRegionDrawable(Exit_Button_inactive);
+                Button.setStyle(_oldStyle);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new MainMenuScreen(game));
+            }
+        });
+
+
+        stage.addActor(Button);
+        Gdx.input.setInputProcessor(stage);
+
+
     }
 
     @Override
@@ -58,8 +93,6 @@ public class SettingsScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         int x = MainGame.Game_Width / 2 - R_X / 2;
         int y = MainGame.Game_Height / 2;
-        int y1 = MainGame.Game_Height / 4;
-        stage.draw();
         game.batch.begin();
 
         game.batch.draw(backgroundTexture, 0, 0, MainGame.Game_Width, MainGame.Game_Height);
@@ -69,29 +102,15 @@ public class SettingsScreen implements Screen {
                 MainGame.Game_Height - Gdx.input.getY() > y  ) {
             game.batch.draw(Resolution_active, x, y);
             if (Gdx.input.isTouched()){
-                Gdx.app.exit();
+                game.setScreen(new ResolutionScreen(game));
             }
         } else {
             game.batch.draw(Resolution_inactive, x, y);
         }
-        if (Gdx.input.getX() < x + R_X && Gdx.input.getX() > x &&
-                MainGame.Game_Height - Gdx.input.getY() < y1+R_Y &&
-                MainGame.Game_Height - Gdx.input.getY() > y1  ) {
-            game.batch.draw(Exit_Button_active, x, y1);
-            if (Gdx.input.isTouched()){
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        game.setScreen(new MainMenuScreen(game));
-                    }
-                },1);
-
-            }
-        } else {
-            game.batch.draw(Exit_Button_inactive, x, y1);
-        }
         game.batch.end();
 
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     @Override
@@ -111,12 +130,13 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void hide() {
+        dispose();
 
     }
 
     @Override
     public void dispose() {
-        game.batch.dispose();
         stage.dispose();
+
     }
 }

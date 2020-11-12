@@ -2,11 +2,13 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 
-import com.badlogic.gdx.utils.Timer;
+
 import com.mygdx.game.MainGame;
 
 public class MainMenuScreen implements Screen {
@@ -20,6 +22,9 @@ public class MainMenuScreen implements Screen {
     private static final int E_Y = 150;
     private static final int P_Y = 150;
 
+    private static final double k_X = 4.77;
+    private static final double k_Y = 3.21;
+
     Texture Play_Button_inactive;
     Texture Exit_Button_inactive;
     Texture Play_Button_active;
@@ -28,6 +33,9 @@ public class MainMenuScreen implements Screen {
     Texture Settings_Button_active;
     Texture backgroundTexture;
     Texture logoTexture;
+
+
+
 
     MainGame game;
     public MainMenuScreen (MainGame game) {
@@ -47,6 +55,7 @@ public class MainMenuScreen implements Screen {
         Settings_Button_active = new Texture("buttons/settings_button_down.png");
         backgroundTexture = new Texture("parallax-space-background.jpg");
         logoTexture =  new Texture("AuberLogo.png");
+        logoTexture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     }
 
     @Override
@@ -60,7 +69,9 @@ public class MainMenuScreen implements Screen {
         game.batch.begin();
 
         game.batch.draw(backgroundTexture, 0, 0, MainGame.Game_Width, MainGame.Game_Height);
-        game.batch.draw(logoTexture, MainGame.Game_Width / 2 - logoTexture.getWidth() / 2, MainGame.Game_Height - logoTexture.getHeight() * 16/13);
+        game.batch.draw(logoTexture, MainGame.Game_Width / 6.2f,
+                MainGame.Game_Height / 1.5f,
+                MainGame.Game_Width / 1.5f, MainGame.Game_Height/3.2f);
 
         if (Gdx.input.getX() < x + E_X && Gdx.input.getX() > x &&
                 MainGame.Game_Height - Gdx.input.getY() < y+E_Y &&
@@ -68,6 +79,7 @@ public class MainMenuScreen implements Screen {
             game.batch.draw(Exit_Button_active, x, y);
             if (Gdx.input.isTouched()){
                 Gdx.app.exit();
+
             }
         } else {
             game.batch.draw(Exit_Button_inactive, x, y);
@@ -77,13 +89,7 @@ public class MainMenuScreen implements Screen {
                 MainGame.Game_Height - Gdx.input.getY() > y1  ) {
             game.batch.draw(Settings_Button_active, x, y1);
             if (Gdx.input.isTouched()){
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
                         game.setScreen(new SettingsScreen(game));;
-                    }
-                }, 1);
-
             }
         } else {
             game.batch.draw(Settings_Button_inactive, x, y1);

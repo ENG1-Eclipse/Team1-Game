@@ -10,8 +10,8 @@ import java.awt.*;
 
 public class MainGame extends Game {
 	public static Dimension dimension = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-	public static final int Game_Width = (int) dimension.getWidth();
-	public static final int Game_Height = (int) dimension.getHeight();
+	public static  int Game_Width = (int) dimension.getWidth();
+	public static  int Game_Height = (int) dimension.getHeight();
 
 	public SpriteBatch batch;
 	@Override

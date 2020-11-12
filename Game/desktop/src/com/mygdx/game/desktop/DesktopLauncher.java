@@ -15,6 +15,7 @@ public class DesktopLauncher {
 		config.title = "Team1Game";
 		config.resizable = true;
 		config.fullscreen = true;
+		config.forceExit = false;
 
 		new LwjglApplication(new MainGame(), config);
 	}
