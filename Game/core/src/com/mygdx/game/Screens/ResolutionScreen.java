@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MainGame;
 
@@ -26,7 +25,6 @@ public class ResolutionScreen implements Screen {
     private Stage stage;
     private Table table;
     private Skin skin;
-    private List list;
 
 
 
@@ -52,16 +50,33 @@ public class ResolutionScreen implements Screen {
         Button1.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                //Button1.getStyle() = skin.get("green", TextButton.TextButtonStyle.class);
+                MainGame.Game_Width = 1920;
+                MainGame.Game_Height = 1080;
+                gamecam.update();
+                game.setScreen(new ResolutionScreen(game));
+            }
+        });
+        final TextButton Button2 = new TextButton("1440x900", skin);
+        Button2.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
                 MainGame.Game_Width = 1440;
                 MainGame.Game_Height = 900;
                 gamecam.update();
                 game.setScreen(new ResolutionScreen(game));
-
-
             }
         });
-        final TextButton Button2 = new TextButton("1440x900", skin);
         final TextButton Button3 = new TextButton("1366x768", skin);
+        Button3.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                MainGame.Game_Width = 1366;
+                MainGame.Game_Height = 768;
+                gamecam.update();
+                game.setScreen(new ResolutionScreen(game));
+            }
+        });
 
 
 
@@ -125,8 +140,7 @@ public class ResolutionScreen implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        gamePort.update(width, height,true);
-        gamecam.update();    }
+   }
 
     @Override
     public void pause() {

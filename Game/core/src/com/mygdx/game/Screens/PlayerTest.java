@@ -164,6 +164,7 @@ public class PlayerTest implements Screen {
 
     @Override
     public void dispose() {
+
         textureAtlas.dispose();
     }
 }

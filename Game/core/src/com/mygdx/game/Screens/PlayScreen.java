@@ -54,8 +54,6 @@ public class PlayScreen implements Screen {
     @Override
     public void resize(int width, int height) {
 
-        gamePort.update(width,height);
-        gamecam.update();
     }
 
     @Override

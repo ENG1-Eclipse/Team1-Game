@@ -3,6 +3,7 @@ package com.mygdx.game.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -12,10 +13,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MainGame;
 
 public class SettingsScreen implements Screen {
+
+    private OrthographicCamera gamecam;
+    private Viewport gamePort;
 
 
     private static final int R_Y = 150;
@@ -23,8 +28,6 @@ public class SettingsScreen implements Screen {
 
 
     private Stage stage;
-
-
 
 
     Texture Resolution_inactive;
@@ -38,7 +41,10 @@ public class SettingsScreen implements Screen {
     public SettingsScreen (MainGame game) {
         this.game = game;
 
-
+        gamecam = new OrthographicCamera();
+        gamecam.position.set(MainGame.Game_Width,MainGame.Game_Height,0);
+        gamePort = new FitViewport(MainGame.Game_Width,MainGame.Game_Height,gamecam);
+        gamePort.apply();
 
     }
 
@@ -52,7 +58,7 @@ public class SettingsScreen implements Screen {
         backgroundTexture = new Texture("parallax-space-background.jpg");
 
 
-        stage = new Stage(new ScreenViewport());
+        stage = new Stage(gamePort);
         final TextureRegion MyTextureRegion = new TextureRegion(Exit_Button_inactive);
         Drawable drawable = new TextureRegionDrawable(MyTextureRegion);
         final ImageButton Button = new ImageButton(drawable);
@@ -81,6 +87,35 @@ public class SettingsScreen implements Screen {
         });
 
 
+        final TextureRegion MyTextureRegion2 = new TextureRegion(Resolution_inactive);
+        Drawable drawable1 = new TextureRegionDrawable(MyTextureRegion2);
+        final ImageButton Button2 = new ImageButton(drawable1);
+        Button2.setPosition(MainGame.Game_Width / 2 - R_X / 2,MainGame.Game_Height / 2);
+        Button2.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+
+                ImageButton.ImageButtonStyle _oldStyle = Button2.getStyle();
+                _oldStyle.imageUp = new TextureRegionDrawable(Resolution_active);
+                Button2.setStyle(_oldStyle);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+
+                ImageButton.ImageButtonStyle _oldStyle = Button2.getStyle();
+                _oldStyle.imageUp = new TextureRegionDrawable(Resolution_inactive);
+                Button2.setStyle(_oldStyle);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new ResolutionScreen(game));
+            }
+        });
+
+
+        stage.addActor(Button2);
         stage.addActor(Button);
         Gdx.input.setInputProcessor(stage);
 
@@ -91,22 +126,12 @@ public class SettingsScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0.06f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        int x = MainGame.Game_Width / 2 - R_X / 2;
-        int y = MainGame.Game_Height / 2;
+        gamecam.update();
+        game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
         game.batch.draw(backgroundTexture, 0, 0, MainGame.Game_Width, MainGame.Game_Height);
 
-        if (Gdx.input.getX() < x + R_X && Gdx.input.getX() > x &&
-                MainGame.Game_Height - Gdx.input.getY() < y+R_Y &&
-                MainGame.Game_Height - Gdx.input.getY() > y  ) {
-            game.batch.draw(Resolution_active, x, y);
-            if (Gdx.input.isTouched()){
-                game.setScreen(new ResolutionScreen(game));
-            }
-        } else {
-            game.batch.draw(Resolution_inactive, x, y);
-        }
         game.batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
