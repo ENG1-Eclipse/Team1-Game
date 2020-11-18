@@ -12,6 +12,7 @@ import com.mygdx.game.MainGame;
 import com.mygdx.game.Sprites.Infiltrator;
 import com.mygdx.game.Sprites.Player;
 import com.mygdx.game.Screens.MainMenuScreen;
+import sun.rmi.rmic.Main;
 
 import java.awt.*;
 
@@ -31,6 +32,8 @@ public class PlayerTest implements Screen {
     public float yPos = 0;
     public float speed = 5;
 
+    private Texture teleporter;
+    public static int[][] teleporterLocations = {{500,MainGame.Game_Height/2}, {MainGame.Game_Width - 500,MainGame.Game_Height/2}};
 
     public Infiltrator infiltrator;
     public Player player;
@@ -49,12 +52,46 @@ public class PlayerTest implements Screen {
 
         game.batch.begin();
 
+        game.batch.draw(teleporter,500,MainGame.Game_Height/2,
+                teleporter.getWidth() / 6,teleporter.getHeight() / 6);
+        game.batch.draw(teleporter, MainGame.Game_Width - 500,MainGame.Game_Height/2,
+                teleporter.getWidth() / 6,teleporter.getHeight() / 6);
+
         game.batch.draw(player.render(delta), player.getX(),player.getY(),100,100);
         infiltrator.updateTarget(player.getX(), player.getY());
         game.batch.draw(infiltrator.render(delta), infiltrator.getX(),infiltrator.getY(),100,100);
 
         game.batch.end();
 
+    }
+
+    public static boolean  isTeleportValid (float xLoc, float yLoc){
+        //Function to check if the player is within range of a teleporter
+        for (int[] coords : teleporterLocations) {
+            if ((xLoc > coords[0] - MainGame.Game_Width/16 && xLoc < coords[0] + MainGame.Game_Width/16) &&
+                    (yLoc > coords[1] - MainGame.Game_Height/16 && yLoc < coords[1] + MainGame.Game_Height/16)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static int[]  teleportFrom (float xLoc, float yLoc){
+        //Quick and dirty function to determine where to teleport (from 2 teleporters)
+        int[][] teleporterLocations = {{500,MainGame.Game_Height/2}, {MainGame.Game_Width - 500,MainGame.Game_Height/2}};
+        int i = 0;
+        for (int[] coords : teleporterLocations) {
+            if ((xLoc > coords[0] - MainGame.Game_Width/16 && xLoc < coords[0] + MainGame.Game_Width/16) &&
+                    (yLoc > coords[1] - MainGame.Game_Height/16 && yLoc < coords[1] + MainGame.Game_Height/16)){
+                if (i == 0) {
+                    return teleporterLocations[i + 1];
+                } else {
+                    return teleporterLocations[i - 1];
+                }
+            }
+            i++;
+        }
+        return null;
     }
 
     public void quit(){
@@ -67,6 +104,8 @@ public class PlayerTest implements Screen {
     public void show() {
         infiltrator = new Infiltrator();
         player = new Player();
+        teleporter = new Texture("map\\teleporter.png");
+
     }
 
 

@@ -4,7 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.mygdx.game.MainGame;
 import com.mygdx.game.Screens.MainMenuScreen;
+import com.mygdx.game.Screens.PlayerTest;
 
 
 public class Player{
@@ -42,13 +44,18 @@ public class Player{
             if(teleportAnimation.isAnimationFinished(time)){
                 if(teleportingState == 1){
                     teleportingState = 2;
+                    int[] teleCoords = PlayerTest.teleportFrom(xPos, yPos);
+                    xPos = teleCoords[0];
+                    yPos = teleCoords[1];
+                    teleport();
                 }else if(teleportingState == 3){
                     teleportingState = 0;
                 }
-
             }
         }else if(Gdx.input.isKeyPressed(Input.Keys.E)) {
-            interact();
+            if (PlayerTest.isTeleportValid(xPos, yPos)) {
+                teleport();
+            }
         }else if(teleportingState == 2){
             // Teleportation blocks all other inputs to stop the player moving around
             textureRegion = textureAtlas.findRegion("blank");
@@ -93,8 +100,6 @@ public class Player{
     public void interact(){
         ;
         //TODO extended collision detection to allow user to interact with objects
-        //Temp teleport animation test
-        teleport();
     }
 
     public void setTelportState(int teleportState){
