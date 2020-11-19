@@ -35,6 +35,7 @@ public class PlayerTest implements Screen {
 
     private Texture teleporter;
     public static int[][] teleporterLocations = {{500,MainGame.Game_Height/2}, {MainGame.Game_Width - 500,MainGame.Game_Height/2}};
+    public Texture backgroundMap;
 
     public Infiltrator infiltrator;
     public Player player;
@@ -67,6 +68,8 @@ public class PlayerTest implements Screen {
                 teleporter.getWidth() / 6,teleporter.getHeight() / 6);
         game.batch.draw(teleporter, MainGame.Game_Width - 500,MainGame.Game_Height/2,
                 teleporter.getWidth() / 6,teleporter.getHeight() / 6);
+
+        game.batch.draw(backgroundMap,(-MainGame.Game_Width * 3) + (MainGame.Game_Width / 2),(-MainGame.Game_Height * 4) + (MainGame.Game_Width/2), MainGame.Game_Width * 4, MainGame.Game_Height * 4);
 
         game.batch.draw(player.render(delta), player.getX(),player.getY(),playerWidth,playerHeight);
         infiltrator.updateTarget(player.getX(), player.getY());
@@ -117,6 +120,7 @@ public class PlayerTest implements Screen {
         infiltrator = new Infiltrator();
         player = new Player();
         teleporter = new Texture("map\\teleporter.png");
+        backgroundMap = new Texture("map\\mappng.png");
 
         cam = new OrthographicCamera(1920, 1080);
 
