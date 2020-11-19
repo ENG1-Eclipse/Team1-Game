@@ -32,6 +32,7 @@ public class MainMenuScreen implements Screen {
     private static final int E_Y = 150;
     private static final int P_Y = 150;
 
+    //Defining co-ordinates to place buttons
     int x = MainGame.Game_Width / 2 - E_X / 2;
     int y = MainGame.Game_Height / 10;
     int y1 = y * 2 + E_Y / 2 ;
@@ -66,6 +67,7 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
+        //Mapping textures
         Play_Button_inactive = new Texture("buttons/play_button.png");
         Play_Button_active = new Texture("buttons/play_button_down.png");
         Exit_Button_inactive = new Texture("buttons/exit_button.png");
@@ -106,6 +108,7 @@ public class MainMenuScreen implements Screen {
 
             }
         });
+
         // creating settings button
         final TextureRegion MyTextureRegion1 = new TextureRegion(Settings_Button_inactive);
         Drawable drawable1 = new TextureRegionDrawable(MyTextureRegion1);
@@ -163,6 +166,7 @@ public class MainMenuScreen implements Screen {
             }
         });
 
+        //Adding buttons to screen
         stage.addActor(Button);
         stage.addActor(Button1);
         stage.addActor(Button2);
