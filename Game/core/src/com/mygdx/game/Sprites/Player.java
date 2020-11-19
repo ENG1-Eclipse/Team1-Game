@@ -22,6 +22,9 @@ public class Player{
     private  int teleportingState;
     public float xPos = 0;
     public float yPos = 0;
+    public int width;
+    public int height;
+
     public float speed = 5;
 
     public Player(){
@@ -80,7 +83,8 @@ public class Player{
         }else{
             textureRegion = idleAnimation.getKeyFrame(time);
         }
-
+        width = textureRegion.getRegionWidth();
+        height = textureRegion.getRegionHeight();
         return textureRegion;
 
     }

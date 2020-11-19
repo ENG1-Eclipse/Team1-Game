@@ -12,7 +12,7 @@ import com.mygdx.game.MainGame;
 import com.mygdx.game.Sprites.Infiltrator;
 import com.mygdx.game.Sprites.Player;
 import com.mygdx.game.Screens.MainMenuScreen;
-import sun.rmi.rmic.Main;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import java.awt.*;
 
@@ -27,6 +27,7 @@ public class PlayerTest implements Screen {
     private  Animation<TextureRegion> rightAnimation;
     private  Animation<TextureRegion> leftAnimation;
     private  Animation<TextureRegion> teleportAnimation;
+    private OrthographicCamera cam;
     private  int teleportingState;
     public float xPos = 0;
     public float yPos = 0;
@@ -44,8 +45,18 @@ public class PlayerTest implements Screen {
 
     }
 
+    final int playerWidth = 100;
+    final int playerHeight = 100;
     @Override
     public void render (float delta) {
+        //---------------Camera-----------------//
+        // Update cam pos to center on the player
+        cam.position.x = player.getX()+playerWidth/2;
+        cam.position.y = player.getY()+playerHeight/2;
+        cam.update();
+        game.batch.setProjectionMatrix(cam.combined);
+
+
         Gdx.gl.glClearColor(0, 0, 0.06f, 1);
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -57,11 +68,12 @@ public class PlayerTest implements Screen {
         game.batch.draw(teleporter, MainGame.Game_Width - 500,MainGame.Game_Height/2,
                 teleporter.getWidth() / 6,teleporter.getHeight() / 6);
 
-        game.batch.draw(player.render(delta), player.getX(),player.getY(),100,100);
+        game.batch.draw(player.render(delta), player.getX(),player.getY(),playerWidth,playerHeight);
         infiltrator.updateTarget(player.getX(), player.getY());
         game.batch.draw(infiltrator.render(delta), infiltrator.getX(),infiltrator.getY(),100,100);
 
         game.batch.end();
+
 
     }
 
@@ -105,6 +117,11 @@ public class PlayerTest implements Screen {
         infiltrator = new Infiltrator();
         player = new Player();
         teleporter = new Texture("map\\teleporter.png");
+
+        cam = new OrthographicCamera(1920, 1080);
+
+        cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
+        cam.update();
 
     }
 
