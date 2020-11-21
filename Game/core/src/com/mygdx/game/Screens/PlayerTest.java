@@ -48,6 +48,7 @@ public class PlayerTest implements Screen {
 
     final int playerWidth = 100;
     final int playerHeight = 100;
+    final int mapScale = 4;
     @Override
     public void render (float delta) {
         //---------------Camera-----------------//
@@ -69,7 +70,8 @@ public class PlayerTest implements Screen {
         game.batch.draw(teleporter, MainGame.Game_Width - 500,MainGame.Game_Height/2,
                 teleporter.getWidth() / 6,teleporter.getHeight() / 6);
 
-        game.batch.draw(backgroundMap,(-MainGame.Game_Width * 3) + (MainGame.Game_Width / 2),(-MainGame.Game_Height * 4) + (MainGame.Game_Width/2), MainGame.Game_Width * 4, MainGame.Game_Height * 4);
+       //game.batch.draw(backgroundMap,(-MainGame.Game_Width * (mapScale-1)) + (MainGame.Game_Width / 2),(-MainGame.Game_Height * mapScale) + (MainGame.Game_Width/2), MainGame.Game_Width * mapScale, MainGame.Game_Height * mapScale);
+        game.batch.draw(backgroundMap,0,0, backgroundMap.getWidth()* mapScale, backgroundMap.getHeight() * mapScale);
 
         game.batch.draw(player.render(delta), player.getX(),player.getY(),playerWidth,playerHeight);
         infiltrator.updateTarget(player.getX(), player.getY());
@@ -118,9 +120,12 @@ public class PlayerTest implements Screen {
     @Override
     public void show() {
         infiltrator = new Infiltrator();
-        player = new Player();
+        player = new Player(mapScale,playerWidth,playerHeight);
+        player.xPos = (MainGame.Game_Width * (mapScale-1))-(MainGame.Game_Width / 2);
+        player.yPos = (MainGame.Game_Height * mapScale) - (MainGame.Game_Width/2);
         teleporter = new Texture("map\\teleporter.png");
         backgroundMap = new Texture("map\\mappng.png");
+        //backgroundMap = new Texture("map\\collisionlayer.png");
 
         cam = new OrthographicCamera(1920, 1080);
 

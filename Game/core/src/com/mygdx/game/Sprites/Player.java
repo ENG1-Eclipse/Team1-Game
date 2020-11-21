@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.mygdx.game.Collision.CheatCollision;
 import com.mygdx.game.MainGame;
 import com.mygdx.game.Screens.MainMenuScreen;
 import com.mygdx.game.Screens.PlayerTest;
+import com.mygdx.game.Collision.*;
 
 
 public class Player{
@@ -24,10 +26,14 @@ public class Player{
     public float yPos = 0;
     public int width;
     public int height;
+    private CheatCollision coll;
 
     public float speed = 5;
 
-    public Player(){
+    public Player(int mapScale,int playerWidth ,int playerHeight){
+        width = playerWidth;
+        height = playerHeight;
+
         textureAtlas = new TextureAtlas(Gdx.files.internal("player/player.atlas"));
         downAnimation = new Animation<TextureRegion>(0.08f, textureAtlas.findRegions("down"), Animation.PlayMode.LOOP_PINGPONG);
         upAnimation = new Animation<TextureRegion>(0.08f, textureAtlas.findRegions("up"), Animation.PlayMode.LOOP_PINGPONG);
@@ -36,8 +42,9 @@ public class Player{
 
         idleAnimation = new Animation<TextureRegion>(0.25f, textureAtlas.findRegions("player_idle"), Animation.PlayMode.LOOP_PINGPONG);
         teleportAnimation = new Animation<TextureRegion>(0.15f, textureAtlas.findRegions("teleport"), Animation.PlayMode.NORMAL);
-
+        coll = new CheatCollision(mapScale);
     }
+
     public TextureRegion render(float delta){
         time += delta;
 
@@ -83,8 +90,6 @@ public class Player{
         }else{
             textureRegion = idleAnimation.getKeyFrame(time);
         }
-        width = textureRegion.getRegionWidth();
-        height = textureRegion.getRegionHeight();
         return textureRegion;
 
     }
@@ -94,11 +99,16 @@ public class Player{
     public float getY(){
         return yPos;
     }
+    public int getWidth(){ return width;}
+    public int getHeight(){return height;}
 
     public void move(float dx,float dy){
         //TODO Add collision check and stop player from moving into the object
-        yPos += dy;
-        xPos += dx;
+        if(coll.getPositionType((int)(xPos+dx),(int)(yPos+dy))!=0 && coll.getPositionType((int)(xPos+dx+width),(int)(yPos+dy))!=0 ){
+            yPos += dy;
+            xPos += dx;
+        }
+
     }
 
     public void interact(){
