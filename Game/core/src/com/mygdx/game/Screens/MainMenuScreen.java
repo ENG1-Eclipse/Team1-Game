@@ -28,9 +28,7 @@ public class MainMenuScreen implements Screen {
 
 
     private static final int E_X = 300;
-    private static final int P_X = 300;
     private static final int E_Y = 150;
-    private static final int P_Y = 150;
 
     //Defining co-ordinates to place buttons
     int x = MainGame.Game_Width / 2 - E_X / 2;
@@ -48,6 +46,9 @@ public class MainMenuScreen implements Screen {
     Texture Settings_Button_active;
     Texture backgroundTexture;
     Texture logoTexture;
+    Texture Help_Button_inactive;
+    Texture Help_Button_active;
+
 
 
 
@@ -67,7 +68,12 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
+
         //Mapping textures
+
+        Help_Button_inactive = new Texture("buttons/help_button.png");
+        Help_Button_active = new Texture("buttons/help_button_down.png");
+
         Play_Button_inactive = new Texture("buttons/play_button.png");
         Play_Button_active = new Texture("buttons/play_button_down.png");
         Exit_Button_inactive = new Texture("buttons/exit_button.png");
@@ -165,11 +171,40 @@ public class MainMenuScreen implements Screen {
                 Gdx.app.exit();
             }
         });
+        //creating help button
+        final TextureRegion MyTextureRegion3 = new TextureRegion(Help_Button_inactive);
+        Drawable drawable3 = new TextureRegionDrawable(MyTextureRegion3);
+        final ImageButton Button3 = new ImageButton(drawable3);
+        Button3.setPosition(10,0);
+        Button3.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+
+                ImageButton.ImageButtonStyle _oldStyle = Button3.getStyle();
+                _oldStyle.imageUp = new TextureRegionDrawable(Help_Button_active);
+                Button3.setStyle(_oldStyle);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+
+                ImageButton.ImageButtonStyle _oldStyle = Button3.getStyle();
+                _oldStyle.imageUp = new TextureRegionDrawable(Help_Button_inactive);
+                Button3.setStyle(_oldStyle);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                game.setScreen(new HelpScreen(game));
+
+            }
+        });
 
         //Adding buttons to screen
         stage.addActor(Button);
         stage.addActor(Button1);
         stage.addActor(Button2);
+        stage.addActor(Button3);
         Gdx.input.setInputProcessor(stage);
 
     }
