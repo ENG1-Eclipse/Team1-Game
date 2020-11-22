@@ -40,15 +40,15 @@ public class Node {
              ArrayList<Node>(list of nodes to get to target node)
      */
     public ArrayList<Node> getPathToTargetNode(String Target,ArrayList<Node> history){
-        System.out.print("Checking:");
-        System.out.println(getName());
+        //System.out.print("Checking:");
+        //System.out.println(getName());
         if(history == null) {
             history = new ArrayList<Node>();
         }
         if(this.name == Target){
             ArrayList<Node>temp= new ArrayList<Node>();
             temp.add(0,this);
-            System.out.println("Found System!");
+            //System.out.println("Found System!");
             return temp;
         }
         history.add(this);

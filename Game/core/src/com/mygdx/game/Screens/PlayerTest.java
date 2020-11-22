@@ -21,6 +21,8 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import java.awt.*;
 import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Random;
 
 
 public class PlayerTest implements Screen {
@@ -63,6 +65,7 @@ public class PlayerTest implements Screen {
         // Update cam pos to center on the player
         inputLoop();
         infiltratorCaptureLoop();
+        systemAssignmentLoop();
 
         cam.position.x = player.getX()+playerWidth/2;
         cam.position.y = player.getY()+playerHeight/2;
@@ -111,6 +114,33 @@ public class PlayerTest implements Screen {
         game.batch.end();
 
 
+    }
+
+
+    private void systemAssignmentLoop(){
+        String temp;
+        for (int i = 0; i < infiltrators.size(); i++) {
+            for (int j = 0; j < systemList.size(); j++) {
+                if(!systemList.get(j).getStatus() && Objects.equals( systemList.get(j).getSystemName(),infiltrators.get(i).getTargetName())){
+                    Random random = new Random();
+                    System nextSystem = null;
+                    while(nextSystem == null) {
+
+                        nextSystem = systemList.get(random.nextInt(systemList.size() - 1));
+                        if(!nextSystem.getStatus()){
+                            nextSystem = null;
+                        }
+
+                    }
+                    infiltrators.get(i).updateTargetNode(nextSystem.getSystemName(),infiltrators.get(i).getCurrentNode());
+                    //java.lang.System.out.print("New target node:");
+                    //java.lang.System.out.println(nextSystem.getSystemName());
+
+
+                }
+
+            }
+        }
     }
 
     private void infiltratorCaptureLoop(){
@@ -198,6 +228,7 @@ public class PlayerTest implements Screen {
         player = new Player(mapScale,playerWidth,playerHeight);
         player.xPos = (backgroundMap.getWidth() * (mapScale-1))-(MainGame.Game_Width / 2);
         player.yPos = (backgroundMap.getHeight()* mapScale) - (MainGame.Game_Width/2);
+        player.speed = 7;
 
         infiltrators = new ArrayList<Infiltrator>();
         systemList = new ArrayList<System>();
@@ -209,26 +240,24 @@ public class PlayerTest implements Screen {
         //Creating nodes!
         // See paper for node positions and links
 
-        // WHY IS THE PLAYER POSITION OFFSET FROM THE MAP!!!!!!
-        // VODKA DEBUG TIME
         Node node0  = new Node((1226)*(mapScale),(mapScale)*(backgroundMap.getHeight()-487),"0");
         Node node6 = new Node((1220)*(mapScale),(mapScale)*(backgroundMap.getHeight()-227),"6");
-        Node nodeB0 = new Node((1165)*(mapScale),(mapScale)*(backgroundMap.getHeight()-194),"B0");
-        Node nodeB1 = new Node(1276*(mapScale),(mapScale)*(backgroundMap.getHeight()-204),"B1");
+        Node nodeB0 = new Node((1165)*(mapScale),(mapScale)*(backgroundMap.getHeight()-194),"Bunk0");
+        Node nodeB1 = new Node(1276*(mapScale),(mapScale)*(backgroundMap.getHeight()-204),"Bunk1");
         Node node2 =new Node(1227*(mapScale),(mapScale)*(backgroundMap.getHeight()-846),"2");
-        Node nodeD = new Node(1287*(mapScale),(mapScale)*(backgroundMap.getHeight()-824),"D");
-        Node nodeS = new Node(1170*(mapScale),(mapScale)*(backgroundMap.getHeight()-882),"S");
+        Node nodeD = new Node(1287*(mapScale),(mapScale)*(backgroundMap.getHeight()-824),"Disposal");
+        Node nodeS = new Node(1170*(mapScale),(mapScale)*(backgroundMap.getHeight()-882),"Storage");
         Node node7 = new Node(1600*(mapScale),(mapScale)*(backgroundMap.getHeight()-499),"7");
         Node node1 = new Node(1666*(mapScale),(mapScale)*(backgroundMap.getHeight()-460),"1");
-        Node nodeN = new Node(1662*(mapScale),(mapScale)*(backgroundMap.getHeight()-558),"N");
-        Node nodeC = new Node(1781*(mapScale),(mapScale)*(backgroundMap.getHeight()-490),"C");
+        Node nodeN = new Node(1662*(mapScale),(mapScale)*(backgroundMap.getHeight()-558),"Navigation");
+        Node nodeC = new Node(1781*(mapScale),(mapScale)*(backgroundMap.getHeight()-490),"Command");
         Node node3 = new Node(736*(mapScale),(mapScale)*(backgroundMap.getHeight()-493),"3");
         Node node8 = new Node(708*(mapScale),(mapScale)*(backgroundMap.getHeight()-480),"8");
-        Node nodeM1 = new Node(666*(mapScale),(mapScale)*(backgroundMap.getHeight()-480),"M1");
+        Node nodeM1 = new Node(666*(mapScale),(mapScale)*(backgroundMap.getHeight()-480),"Medbay1");
         Node node4 = new Node(623*(mapScale),(mapScale)*(backgroundMap.getHeight()-506),"4");
-        Node nodeM0 =new Node(600*(mapScale),(mapScale)*(backgroundMap.getHeight()-484),"M0");
+        Node nodeM0 =new Node(600*(mapScale),(mapScale)*(backgroundMap.getHeight()-484),"Medbay0");
         Node node5 = new Node(282*(mapScale),(mapScale)*(backgroundMap.getHeight()-494),"5");
-        Node nodeE = new Node(232*(mapScale),(mapScale)*(backgroundMap.getHeight()-493),"E");
+        Node nodeE = new Node(232*(mapScale),(mapScale)*(backgroundMap.getHeight()-493),"Engine");
         // Creating links between nodes
         // P.S. there is prob a better way but hey ho
 
@@ -308,15 +337,23 @@ public class PlayerTest implements Screen {
 
 
         //Add systems
-        systemList.add(new System(player.getX(),player.getY(),"test"));
+        systemList.add(new System(nodeE.getX(),nodeE.getY(),"Engine"));
+        systemList.add(new System(nodeM0.getX(),nodeM0.getY(),"Medbay0"));
+        systemList.add(new System(nodeM1.getX(),nodeM1.getY(),"Medbay1"));
+        systemList.add(new System(nodeB0.getX(),nodeB0.getY(),"Bunk0"));
+        systemList.add(new System(nodeB1.getX(),nodeB1.getY(),"Bunk1"));
+        systemList.add(new System(nodeS.getX(),nodeS.getY(),"Storage"));
+        systemList.add(new System(nodeD.getX(),nodeD.getY(),"Disposal"));
+        systemList.add(new System(nodeN.getX(),nodeN.getY(),"Navigation"));
+        systemList.add(new System(nodeC.getX(),nodeC.getY(),"Command"));
+
 
         // Add infiltrators
         infiltrators.add(new Infiltrator(mapScale));
         //infiltrators.get(infiltrators.size()-1).setPos(player.getX(),player.getY()-500);
         infiltrators.get(infiltrators.size()-1).setPos(node0.getX(),node0.getY());
-        java.lang.System.out.println("Test Start");
-        infiltrators.get(infiltrators.size()-1).updateTargetNode("E",node0);
-        java.lang.System.out.println("Test End");
+        infiltrators.get(infiltrators.size()-1).updateTargetNode("Engine",node0);
+
         teleporter = new Texture("map\\teleporter.png");
 
         player.setPos(node0.getX(),node0.getY());
@@ -327,10 +364,8 @@ public class PlayerTest implements Screen {
 
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
         cam.update();
-        java.lang.System.out.print("map W:");
-        java.lang.System.out.print(backgroundMap.getWidth());
-        java.lang.System.out.print(" map H:");
-        java.lang.System.out.println(backgroundMap.getHeight());
+        //java.lang.System.out.print(backgroundMap.getWidth());
+        //java.lang.System.out.println(backgroundMap.getHeight());
 
 
 

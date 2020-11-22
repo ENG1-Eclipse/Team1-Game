@@ -119,9 +119,9 @@ public class Player{
             yPos += dy;
             xPos += dx;
         }
-        java.lang.System.out.print(xPos);
-        java.lang.System.out.print(":");
-        java.lang.System.out.println(yPos);
+        //java.lang.System.out.print(xPos);
+        //java.lang.System.out.print(":");
+        //java.lang.System.out.println(yPos);
 
     }
 

@@ -38,6 +38,7 @@ public class Infiltrator {
     public float targetY;
     private ArrayList<Node> path;
     private String targetName;
+    private Node targetNode;
 
     public int getWidth(){ return width;}
     public int getHeight(){return height;}
@@ -79,6 +80,8 @@ public class Infiltrator {
         if(moveList != null) {
             targetX = moveList.get(0).getX();
             targetY = moveList.get(0).getY();
+            targetNode = moveList.get(moveList.size()-1);
+            targetName = targetNode.getName();
         }
     }
 
@@ -182,6 +185,17 @@ public class Infiltrator {
     public float getY(){
         return yPos;
     }
+    public String getTargetName(){return targetName;}
+    public Node getTargetNode(){return targetNode;}
+    public Node getCurrentNode(){
+        if(moveList.size()!=0) {
+            return moveList.get(0);
+        }
+        else{
+            return targetNode;
+        }
+    }
+
     public void move(float dx,float dy){
         //TODO Add collision check and stop player from moving into the object
         if(coll.getPositionType((int)(xPos+dx+width/4),(int)(yPos+dy+height/8))!=0 && coll.getPositionType((int)(xPos+dx+width*3/4),(int)(yPos+dy+height/8))!=0 ){
