@@ -4,6 +4,10 @@ import com.badlogic.gdx.Gdx;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.*;
+import com.mygdx.game.AiPath.Node;
+import com.mygdx.game.Collision.CheatCollision;
+
+import java.util.ArrayList;
 
 public class Infiltrator {
     //Animation
@@ -18,17 +22,32 @@ public class Infiltrator {
     private  Animation<TextureRegion> teleportAnimation;
     private  int teleportingState;
 
+    private int width,height;
     //Position Data
     public float xPos = 0;
     public float yPos = 0;
     public float speed = 4;
 
+    //Capture Data
+    public int captureDistance = 100;
+    public boolean captured = false;
+
+
+    //AI stuff
     public float targetX;
     public float targetY;
+    private ArrayList<Node> path;
+    private String targetName;
+
+    public int getWidth(){ return width;}
+    public int getHeight(){return height;}
+
+
+    private CheatCollision coll;
 
     // AI
 
-    public Infiltrator(){
+    public Infiltrator(int mapScale){
         // Init textures for animation
         textureAtlas = new TextureAtlas(Gdx.files.internal("infiltrator/infiltrator.atlas"));
         downAnimation = new Animation<TextureRegion>(0.08f, textureAtlas.findRegions("down"), Animation.PlayMode.LOOP_PINGPONG);
@@ -38,16 +57,29 @@ public class Infiltrator {
 
         idleAnimation = new Animation<TextureRegion>(0.25f, textureAtlas.findRegions("player_idle"), Animation.PlayMode.LOOP_PINGPONG);
         teleportAnimation = new Animation<TextureRegion>(0.15f, textureAtlas.findRegions("teleport"), Animation.PlayMode.NORMAL);
+        coll = new CheatCollision(mapScale);
     }
     private int moveDir;
 
-
+    public void setPos(float x,float y){
+        xPos = x;
+        yPos = y;
+    }
     public void updateTarget(float x,float y){
         /*
             Updates the target the infiltrator will walk towards. To allow the infiltrator to turn faster adjust pathMulti value.
         */
         targetX = x;
         targetY = y;
+
+    }
+
+    public void updateTargetNode(String Target, Node currentNode){
+        moveList =  currentNode.getPathToTargetNode(Target,null);
+        if(moveList != null) {
+            targetX = moveList.get(0).getX();
+            targetY = moveList.get(0).getY();
+        }
     }
 
     public TextureRegion render(float delta){
@@ -96,8 +128,25 @@ public class Infiltrator {
     final float pathMulti = 15f;
     private float pathXmulti = 2.5f;
     private float pathYmulti = 2.5f;
+    private ArrayList<Node> moveList;
+
+    public void setTargetSystem(Node targetNode){
+        targetName = targetNode.getName();
+    }
+
 
     public int calculateMove(float x,float y){
+        //TODO BETTER AI: THIS ONE LIKES TO GLITCH IN WALLS AND OBJECTS
+        // Done: some sort of AI had been made. It probably works. Who knows. What is an AI. Will the infiltrator demand rights as if it was equal or not?
+        // Would you give it rights?
+        // One of the big questions you will have to debate in week 10 of INT1...
+        if((xPos-x)*(xPos-x)+(yPos-y)+(yPos-y)<minDis*minDis&&moveList.size()>0) {
+            moveList.remove(0);
+            if (moveList.size() >= 1) {
+                updateTarget(moveList.get(0).getX(), moveList.get(0).getY());
+            }
+        }
+
         float dx = x-xPos;
         float dy = y-yPos;
         if(dx*dx+dy*dy>minDis*minDis){
@@ -133,11 +182,17 @@ public class Infiltrator {
     public float getY(){
         return yPos;
     }
-
     public void move(float dx,float dy){
         //TODO Add collision check and stop player from moving into the object
-        yPos += dy;
-        xPos += dx;
+        if(coll.getPositionType((int)(xPos+dx+width/4),(int)(yPos+dy+height/8))!=0 && coll.getPositionType((int)(xPos+dx+width*3/4),(int)(yPos+dy+height/8))!=0 ){
+            yPos += dy;
+            xPos += dx;
+        }else{
+            float temp;
+            temp = pathXmulti;
+            pathXmulti = pathYmulti;
+            pathYmulti = temp;
+        }
     }
 
     public void teleport(){
@@ -157,5 +212,22 @@ public class Infiltrator {
             teleportAnimation.setPlayMode(Animation.PlayMode.REVERSED);
             time = 0f;
         }
+    }
+
+    public boolean isCaptured(){
+        return teleportingState == 2;
+    }
+
+    public boolean playerInteract(float x,float y){
+        if((xPos-x)*(xPos-x)+(yPos-y)*(yPos-y)<= captureDistance*captureDistance) {
+            if (teleportingState == 0) {
+                teleport();
+                return true;
+            } else if (teleportingState == 2) {
+                captured = true;
+                return true;
+            }
+        }
+        return false;
     }
 }

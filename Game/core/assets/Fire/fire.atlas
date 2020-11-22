@@ -1,0 +1,48 @@
+
+fire.png
+size: 2048,256
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Fire
+  rotate: false
+  xy: 2, 2
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: 1
+Fire
+  rotate: false
+  xy: 254, 2
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: 3
+Fire
+  rotate: false
+  xy: 506, 2
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: 0
+Fire
+  rotate: false
+  xy: 758, 2
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: 5
+Fire
+  rotate: false
+  xy: 1010, 2
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: 2
+Fire
+  rotate: false
+  xy: 1262, 2
+  size: 250, 250
+  orig: 250, 250
+  offset: 0, 0
+  index: 4

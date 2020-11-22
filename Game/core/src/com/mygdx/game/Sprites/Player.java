@@ -10,12 +10,15 @@ import com.mygdx.game.Screens.MainMenuScreen;
 import com.mygdx.game.Screens.PlayerTest;
 import com.mygdx.game.Collision.*;
 
+import javax.swing.plaf.synth.SynthEditorPaneUI;
+
 
 public class Player{
     private TextureRegion textureRegion;
     private TextureAtlas textureAtlas;
     private Animation<TextureRegion> downAnimation;
     private float time = 0f;
+    private int animationInput;
     private Animation<TextureRegion> idleAnimation;
     private  Animation<TextureRegion> upAnimation;
     private  Animation<TextureRegion> rightAnimation;
@@ -45,6 +48,10 @@ public class Player{
         coll = new CheatCollision(mapScale);
     }
 
+    public void setPos(int x, int y){
+        xPos = x;
+        yPos = y;
+    }
     public TextureRegion render(float delta){
         time += delta;
 
@@ -62,30 +69,30 @@ public class Player{
                     teleportingState = 0;
                 }
             }
-        }else if(Gdx.input.isKeyPressed(Input.Keys.E)) {
+        }else if(animationInput == Input.Keys.E) {
             if (PlayerTest.isTeleportValid(xPos, yPos)) {
                 teleport();
             }
         }else if(teleportingState == 2){
             // Teleportation blocks all other inputs to stop the player moving around
             textureRegion = textureAtlas.findRegion("blank");
-        }else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+        }else if(animationInput == Input.Keys.S) {
             textureRegion = downAnimation.getKeyFrame(time);
             //yPos-=speed;
             move(0f,-speed);
-        }else if(Gdx.input.isKeyPressed(Input.Keys.W)){
+        }else if(animationInput == Input.Keys.W){
             textureRegion = upAnimation.getKeyFrame(time);
             //yPos += speed;
             move(0f,speed);
-        }else if(Gdx.input.isKeyPressed(Input.Keys.D)){
+        }else if(animationInput == Input.Keys.D){
             textureRegion = rightAnimation.getKeyFrame(time);
             //xPos+=speed;
             move(speed,0f);
-        }else if(Gdx.input.isKeyPressed(Input.Keys.A)){
+        }else if(animationInput == Input.Keys.A){
             textureRegion = leftAnimation.getKeyFrame(time);
             //xPos -=speed;
             move(-speed,0f);
-        }else if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+        }else if(animationInput == Input.Keys.ESCAPE) {
             quit();
         }else{
             textureRegion = idleAnimation.getKeyFrame(time);
@@ -102,12 +109,19 @@ public class Player{
     public int getWidth(){ return width;}
     public int getHeight(){return height;}
 
+    public void updateInput(int input){
+        animationInput = input;
+    }
+
     public void move(float dx,float dy){
         //TODO Add collision check and stop player from moving into the object
-        if(coll.getPositionType((int)(xPos+dx),(int)(yPos+dy))!=0 && coll.getPositionType((int)(xPos+dx+width),(int)(yPos+dy))!=0 ){
+        if(coll.getPositionType((int)(xPos+dx+width/4),(int)(yPos+dy+height/8))!=0 && coll.getPositionType((int)(xPos+dx+width*3/4),(int)(yPos+dy+height/8))!=0 ){
             yPos += dy;
             xPos += dx;
         }
+        java.lang.System.out.print(xPos);
+        java.lang.System.out.print(":");
+        java.lang.System.out.println(yPos);
 
     }
 
