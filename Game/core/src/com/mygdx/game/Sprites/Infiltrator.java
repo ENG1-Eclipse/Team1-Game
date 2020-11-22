@@ -143,7 +143,7 @@ public class Infiltrator {
         // Done: some sort of AI had been made. It probably works. Who knows. What is an AI. Will the infiltrator demand rights as if it was equal or not?
         // Would you give it rights?
         // One of the big questions you will have to debate in week 10 of INT1...
-        if((xPos-x)*(xPos-x)+(yPos-y)+(yPos-y)<minDis*minDis&&moveList.size()>0) {
+        if((xPos-x)*(xPos-x)+(yPos-y)*(yPos-y)<minDis*minDis&&moveList.size()>0) {
             moveList.remove(0);
             if (moveList.size() >= 1) {
                 updateTarget(moveList.get(0).getX(), moveList.get(0).getY());

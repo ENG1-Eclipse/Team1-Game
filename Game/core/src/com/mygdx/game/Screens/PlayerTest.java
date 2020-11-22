@@ -63,10 +63,14 @@ public class PlayerTest implements Screen {
     public void render (float delta) {
         //---------------Camera-----------------//
         // Update cam pos to center on the player
+        java.lang.System.out.println("DEBUG: inputLoop()");
         inputLoop();
+        java.lang.System.out.println("DEBUG: infilCapLoop()");
         infiltratorCaptureLoop();
+        java.lang.System.out.println("DEBUG: sysAssi()");
         systemAssignmentLoop();
 
+        java.lang.System.out.println("DEBUG: Camera");
         cam.position.x = player.getX()+playerWidth/2;
         cam.position.y = player.getY()+playerHeight/2;
         cam.update();
@@ -85,9 +89,11 @@ public class PlayerTest implements Screen {
                 teleporter.getWidth() / 6,teleporter.getHeight() / 6);
 
         //Draw Background
+        java.lang.System.out.println("DEBUG: Background");
         game.batch.draw(backgroundMap,0,0, backgroundMap.getWidth()* mapScale, backgroundMap.getHeight() * mapScale);
 
 
+        java.lang.System.out.println("DEBUG: Systems");
         //Draw Systems
         for (int i = 0; i < systemList.size(); i++) {
             game.batch.draw(systemList.get(i).render(delta),systemList.get(i).getX(),systemList.get(i).getY(),systemList.get(i).getWidth(),systemList.get(i).getHeight());
@@ -95,6 +101,7 @@ public class PlayerTest implements Screen {
 
 
         //Draw Infiltrator + Check for interaction
+        java.lang.System.out.println("DEBUG: Infil");
         for (int i = 0; i < infiltrators.size(); i++) {
             game.batch.draw((infiltrators.get(i)).render(delta),(infiltrators.get(i)).getX(),(infiltrators.get(i)).getY(),playerWidth,playerHeight);
             for (int j = 0; j < systemList.size(); j++) {
@@ -108,10 +115,12 @@ public class PlayerTest implements Screen {
 
 
         //Draw Player
+        java.lang.System.out.println("DEBUG: Player");
         game.batch.draw(player.render(delta), player.getX(),player.getY(),playerWidth,playerHeight);
 
 
         game.batch.end();
+        java.lang.System.out.println("DEBUG: END");
 
 
     }
@@ -119,23 +128,36 @@ public class PlayerTest implements Screen {
 
     private void systemAssignmentLoop(){
         String temp;
+        ArrayList <System>systemsLeft = new ArrayList<System>();
         for (int i = 0; i < infiltrators.size(); i++) {
+            int counter = 0;
+            for (int k = 0; k < systemList.size(); k++) {
+                if (systemList.get(k).getStatus()) {
+                    systemsLeft.add(systemList.get(k));
+                }
+            }
+            if(systemsLeft.size()==0) {
+                //quit();
+            }
             for (int j = 0; j < systemList.size(); j++) {
-                if(!systemList.get(j).getStatus() && Objects.equals( systemList.get(j).getSystemName(),infiltrators.get(i).getTargetName())){
-                    Random random = new Random();
-                    System nextSystem = null;
-                    while(nextSystem == null) {
 
-                        nextSystem = systemList.get(random.nextInt(systemList.size() - 1));
-                        if(!nextSystem.getStatus()){
-                            nextSystem = null;
-                        }
+                if (!systemList.get(j).getStatus() && Objects.equals(systemList.get(j).getSystemName(), infiltrators.get(i).getTargetName())) {
+                    System nextSystem = null;
+                    if(systemsLeft.size()>1) {
+                        Random random = new Random();
+
+
+                        nextSystem = systemsLeft.get(random.nextInt(systemsLeft.size() - 1));
+
+                        infiltrators.get(i).updateTargetNode(nextSystem.getSystemName(), infiltrators.get(i).getCurrentNode());
+                        //java.lang.System.out.print("New target node:");
+                        //java.lang.System.out.println(nextSystem.getSystemName());
+                    }
+                    else if(systemsLeft.size()==1){
+                        nextSystem = systemsLeft.get(0);
+                        infiltrators.get(i).updateTargetNode(nextSystem.getSystemName(), infiltrators.get(i).getCurrentNode());
 
                     }
-                    infiltrators.get(i).updateTargetNode(nextSystem.getSystemName(),infiltrators.get(i).getCurrentNode());
-                    //java.lang.System.out.print("New target node:");
-                    //java.lang.System.out.println(nextSystem.getSystemName());
-
 
                 }
 
@@ -258,6 +280,10 @@ public class PlayerTest implements Screen {
         Node nodeM0 =new Node(600*(mapScale),(mapScale)*(backgroundMap.getHeight()-484),"Medbay0");
         Node node5 = new Node(282*(mapScale),(mapScale)*(backgroundMap.getHeight()-494),"5");
         Node nodeE = new Node(232*(mapScale),(mapScale)*(backgroundMap.getHeight()-493),"Engine");
+
+
+
+
         // Creating links between nodes
         // P.S. there is prob a better way but hey ho
 
@@ -350,9 +376,20 @@ public class PlayerTest implements Screen {
 
         // Add infiltrators
         infiltrators.add(new Infiltrator(mapScale));
-        //infiltrators.get(infiltrators.size()-1).setPos(player.getX(),player.getY()-500);
+        infiltrators.get(infiltrators.size()-1).setPos(node0.getX(),node0.getY());
+        infiltrators.get(infiltrators.size()-1).updateTargetNode("Medbay0",node0);
+
+        infiltrators.add(new Infiltrator(mapScale));
         infiltrators.get(infiltrators.size()-1).setPos(node0.getX(),node0.getY());
         infiltrators.get(infiltrators.size()-1).updateTargetNode("Engine",node0);
+
+        infiltrators.add(new Infiltrator(mapScale));
+        infiltrators.get(infiltrators.size()-1).setPos(node0.getX(),node0.getY());
+        infiltrators.get(infiltrators.size()-1).updateTargetNode("Bunk0",node0);
+
+        infiltrators.add(new Infiltrator(mapScale));
+        infiltrators.get(infiltrators.size()-1).setPos(node0.getX(),node0.getY());
+        infiltrators.get(infiltrators.size()-1).updateTargetNode("Storage",node0);
 
         teleporter = new Texture("map\\teleporter.png");
 
