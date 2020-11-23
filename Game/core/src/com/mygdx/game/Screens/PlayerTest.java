@@ -1,5 +1,4 @@
 package com.mygdx.game.Screens;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -7,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
+
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,18 +20,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+
 import com.mygdx.game.AiPath.Node;
+import com.mygdx.game.Collision.CheatCollision;
 import com.mygdx.game.MainGame;
 import com.mygdx.game.Sprites.Fire;
-import com.mygdx.game.Sprites.GameObject;
 import com.mygdx.game.Sprites.Infiltrator;
 import com.mygdx.game.Sprites.Player;
 import com.mygdx.game.Sprites.System;
-import com.mygdx.game.Screens.MainMenuScreen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 
-import java.awt.*;
-import java.nio.file.NotDirectoryException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
@@ -66,7 +63,6 @@ public class PlayerTest implements Screen {
     private ArrayList<Infiltrator> infiltrators;
 
     private Texture teleporter;
-    public static int[][] teleporterLocations = {{500,MainGame.Game_Height/2}, {MainGame.Game_Width - 500,MainGame.Game_Height/2}};
     public Texture backgroundMap;
 
     public Player player;
@@ -107,7 +103,9 @@ public class PlayerTest implements Screen {
 
             Gdx.gl.glClearColor(0, 0, 0.06f, 1);
 
+
             Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
 
             game.batch.begin();
 
@@ -227,6 +225,8 @@ public class PlayerTest implements Screen {
         }else if(Gdx.input.isKeyPressed(Input.Keys.D)){
             //Right
             player.updateInput(Input.Keys.D);
+        }else if(Gdx.input.isKeyPressed(Input.Keys.T)){
+            player.updateInput(Input.Keys.T);
         }else{
             player.updateInput(-1);
             //Idle
@@ -236,33 +236,12 @@ public class PlayerTest implements Screen {
     }
 
 
-    public static boolean  isTeleportValid (float xLoc, float yLoc){
-        //Function to check if the player is within range of a teleporter
-        for (int[] coords : teleporterLocations) {
-            if ((xLoc > coords[0] - MainGame.Game_Width/16 && xLoc < coords[0] + MainGame.Game_Width/16) &&
-                    (yLoc > coords[1] - MainGame.Game_Height/16 && yLoc < coords[1] + MainGame.Game_Height/16)){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static int[]  teleportFrom (float xLoc, float yLoc){
+    public static int[]  teleportTo (){
         //Quick and dirty function to determine where to teleport (from 2 teleporters)
-        int[][] teleporterLocations = {{500,MainGame.Game_Height/2}, {MainGame.Game_Width - 500,MainGame.Game_Height/2}};
-        int i = 0;
-        for (int[] coords : teleporterLocations) {
-            if ((xLoc > coords[0] - MainGame.Game_Width/16 && xLoc < coords[0] + MainGame.Game_Width/16) &&
-                    (yLoc > coords[1] - MainGame.Game_Height/16 && yLoc < coords[1] + MainGame.Game_Height/16)){
-                if (i == 0) {
-                    return teleporterLocations[i + 1];
-                } else {
-                    return teleporterLocations[i - 1];
-                }
-            }
-            i++;
-        }
-        return null;
+        int[][] teleporterLocations = {{345 * 4,579 * 4}, {740 * 4,499 * 4}, {1140 * 4, 829 * 4}, {1230 * 4, 549 * 4},
+                {1180 * 4, 159 * 4}, {1700 * 4, 589 * 4}};
+        //TODO Teleporter location choice
+        return teleporterLocations[3];
     }
 
 

@@ -61,16 +61,15 @@ public class Player{
             if(teleportAnimation.isAnimationFinished(time)){
                 if(teleportingState == 1){
                     teleportingState = 2;
-                    int[] teleCoords = PlayerTest.teleportFrom(xPos, yPos);
-                    xPos = teleCoords[0];
-                    yPos = teleCoords[1];
+                    int[] teleCoords = PlayerTest.teleportTo();
+                    setPos(teleCoords[0],teleCoords[1]);
                     teleport();
                 }else if(teleportingState == 3){
                     teleportingState = 0;
                 }
             }
-        }else if(animationInput == Input.Keys.E) {
-            if (PlayerTest.isTeleportValid(xPos, yPos)) {
+        }else if(animationInput == Input.Keys.T) {
+            if (coll.getPositionType(Math.round(xPos), Math.round(yPos)) == 2) {
                 teleport();
             }
         }else if(teleportingState == 2){
