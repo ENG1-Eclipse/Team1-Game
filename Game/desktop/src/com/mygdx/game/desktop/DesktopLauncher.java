@@ -13,7 +13,7 @@ public class DesktopLauncher {
 		config.width = MainGame.Game_Width;
 		config.height = MainGame.Game_Height;
 		config.title = "Team1Game";
-		config.resizable = true;
+		config.resizable = false;
 		config.fullscreen = true;
 		config.forceExit = false;
 

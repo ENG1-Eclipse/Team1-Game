@@ -50,7 +50,6 @@ public class ResolutionScreen implements Screen {
         Button1.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //Button1.getStyle() = skin.get("green", TextButton.TextButtonStyle.class);
                 MainGame.Game_Width = 1920;
                 MainGame.Game_Height = 1080;
                 gamecam.update();

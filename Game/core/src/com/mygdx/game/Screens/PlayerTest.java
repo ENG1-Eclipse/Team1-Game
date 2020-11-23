@@ -178,6 +178,10 @@ public class PlayerTest implements Screen {
     }
 
     private void inputLoop(){
+        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            //Escape
+            quit();
+        }
         if(Gdx.input.isKeyPressed(Input.Keys.E)) {
             //TODO: INTERACTION
             for (int i = 0; i < infiltrators.size(); i++) {
@@ -196,9 +200,6 @@ public class PlayerTest implements Screen {
         }else if(Gdx.input.isKeyPressed(Input.Keys.D)){
             //Right
             player.updateInput(Input.Keys.D);
-        }else if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            //Escape
-            quit();
         }else{
             player.updateInput(-1);
             //Idle

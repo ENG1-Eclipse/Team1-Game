@@ -2,6 +2,7 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -62,28 +63,65 @@ public class HelpScreen implements Screen {
         Texture texture = new Texture(Gdx.files.internal("bauhaus93_size72.png"));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         font = new BitmapFont(Gdx.files.internal("bauhaus93_size72.fnt"), new TextureRegion(texture), false);
-        Label.LabelStyle label1Style = new Label.LabelStyle();
-        label1Style.font = font;
+        Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        labelStyle.background = skin.newDrawable("white", 0.2f, 0.2f, 0.2f, 0.8f);
 
 
-        Heading = "Hello World";
 
         table = new Table(skin);
 
         stage = new Stage(gamePort);
 
         int row_height = MainGame.Game_Height/12;
-        Label label1 = new Label("HELP",label1Style);
+        Label label1 = new Label("Game Story:",labelStyle);
         label1.setSize(MainGame.Game_Width,row_height);
-        label1.setPosition(0,MainGame.Game_Height-row_height*2);
+        label1.setPosition(0,MainGame.Game_Height-row_height);
         label1.setAlignment(Align.center);
+        label1.setAlignment(Align.top);
         stage.addActor(label1);
+
+        Label label2 = new Label("Deep Space Y is a space station on the outskirts of the galaxy, inhabited by humans and\n" +
+                "different species of aliens. You are Auber, the constable of the station, and your job is to\n" +
+                "enforce law and order. The space station has been recently infiltrated by a team of hostiles\n" +
+                "operatives whose mission is to sabotage key systems of the station and render it inoperable.\n" +
+                "When a sabotage attempt is reported somewhere in the station, you are notified, and you need\n" +
+                "to get there as quickly as possible, arrest the perpetrator, and teleport them to the brig.\n" +
+                "Infiltrators have different special abilities that can make them difficult to arrest.\n"
+                ,labelStyle);
+        label2.setSize(MainGame.Game_Width,MainGame.Game_Height-row_height);
+        label2.setPosition(0,0);
+        label2.setAlignment(Align.left);
+        label2.setAlignment(Align.top);
+        label2.setWrap(true);
+        stage.addActor(label2);
+
+        Label label3 = new Label("Controls:",skin);
+        label3.setSize(MainGame.Game_Width,row_height);
+        label3.setPosition(0,MainGame.Game_Height/2);
+        label3.setAlignment(Align.center);
+        label3.setAlignment(Align.top);
+        stage.addActor(label3);
+
+        Label label4 = new Label(" 'W'  -  Moving Up \n" +
+                " 'S'  -  Moving Down \n" +
+                " 'D'  -  Moving Right \n" +
+                " 'A'  -  Moving Left \n" +
+                " 'E'  -  Arrest enemy/Use Teleport \n" +
+                " 'ESC'  -  Quit"
+                ,skin);
+        label4.setSize(MainGame.Game_Width,MainGame.Game_Height/2);
+        label4.setPosition(0,row_height/2);
+        label4.setAlignment(Align.left);
+        label4.setAlignment(Align.top);
+        label4.setWrap(true);
+        stage.addActor(label4);
 
 
         final TextureRegion MyTextureRegion = new TextureRegion(Exit_Button_inactive);
         Drawable drawable = new TextureRegionDrawable(MyTextureRegion);
         final ImageButton Button = new ImageButton(drawable);
-        Button.setPosition(MainGame.Game_Width / 2 - R_X / 2,MainGame.Game_Height / 5);
+        Button.setPosition(MainGame.Game_Width / 2 - R_X / 2,MainGame.Game_Height / 8);
         Button.addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
