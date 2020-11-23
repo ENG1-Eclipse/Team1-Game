@@ -43,6 +43,9 @@ public class CheatCollision {
             return 0;
         }
         //Teleporter (255,255,  0) returns 2
+        else if(pix == Color.rgba8888(1f, 1f, 0f, 1f)) {
+            return 2;
+        }
 
         //Systems (  0,255,  0) returns 3
 
