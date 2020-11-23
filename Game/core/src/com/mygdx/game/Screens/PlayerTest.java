@@ -8,6 +8,18 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.AtlasRegion;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.AiPath.Node;
 import com.mygdx.game.MainGame;
 import com.mygdx.game.Sprites.Fire;
@@ -26,6 +38,15 @@ import java.util.Random;
 
 
 public class PlayerTest implements Screen {
+    private Stage stage;
+    private Viewport gamePort;
+    BitmapFont font;
+    private Skin skin;
+    boolean paused;
+    public static Texture Exit_Button_inactive;
+    public static Texture Exit_Button_active;
+    public static Texture Resume_inactive;
+    public static Texture Resume_active;
     private TextureRegion textureRegion;
     private TextureAtlas textureAtlas;
     private Animation<TextureRegion> downAnimation;
@@ -56,6 +77,8 @@ public class PlayerTest implements Screen {
 
     }
 
+
+
     final int playerWidth = 100;
     final int playerHeight = 100;
     final int mapScale = 4;
@@ -63,66 +86,69 @@ public class PlayerTest implements Screen {
     public void render (float delta) {
         //---------------Camera-----------------//
         // Update cam pos to center on the player
-        java.lang.System.out.println("DEBUG: inputLoop()");
-        inputLoop();
-        java.lang.System.out.println("DEBUG: infilCapLoop()");
-        infiltratorCaptureLoop();
-        java.lang.System.out.println("DEBUG: sysAssi()");
-        systemAssignmentLoop();
+        if(paused) {
+            //Escape
+            stage.act(Gdx.graphics.getDeltaTime());
+            stage.draw();
+        }else {
+            java.lang.System.out.println("DEBUG: inputLoop()");
+            inputLoop();
+            java.lang.System.out.println("DEBUG: infilCapLoop()");
+            infiltratorCaptureLoop();
+            java.lang.System.out.println("DEBUG: sysAssi()");
+            systemAssignmentLoop();
 
-        java.lang.System.out.println("DEBUG: Camera");
-        cam.position.x = player.getX()+playerWidth/2;
-        cam.position.y = player.getY()+playerHeight/2;
-        cam.update();
-        game.batch.setProjectionMatrix(cam.combined);
-
-
-        Gdx.gl.glClearColor(0, 0, 0.06f, 1);
-
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        game.batch.begin();
-
-        game.batch.draw(teleporter,500,MainGame.Game_Height/2,
-                teleporter.getWidth() / 6,teleporter.getHeight() / 6);
-        game.batch.draw(teleporter, MainGame.Game_Width - 500,MainGame.Game_Height/2,
-                teleporter.getWidth() / 6,teleporter.getHeight() / 6);
-
-        //Draw Background
-        java.lang.System.out.println("DEBUG: Background");
-        game.batch.draw(backgroundMap,0,0, backgroundMap.getWidth()* mapScale, backgroundMap.getHeight() * mapScale);
+            java.lang.System.out.println("DEBUG: Camera");
+            cam.position.x = player.getX() + playerWidth / 2;
+            cam.position.y = player.getY() + playerHeight / 2;
+            cam.update();
+            game.batch.setProjectionMatrix(cam.combined);
 
 
-        java.lang.System.out.println("DEBUG: Systems");
-        //Draw Systems
-        for (int i = 0; i < systemList.size(); i++) {
-            game.batch.draw(systemList.get(i).render(delta),systemList.get(i).getX(),systemList.get(i).getY(),systemList.get(i).getWidth(),systemList.get(i).getHeight());
-        }
+            Gdx.gl.glClearColor(0, 0, 0.06f, 1);
+
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+            game.batch.begin();
+
+            game.batch.draw(teleporter, 500, MainGame.Game_Height / 2,
+                    teleporter.getWidth() / 6, teleporter.getHeight() / 6);
+            game.batch.draw(teleporter, MainGame.Game_Width - 500, MainGame.Game_Height / 2,
+                    teleporter.getWidth() / 6, teleporter.getHeight() / 6);
+
+            //Draw Background
+            java.lang.System.out.println("DEBUG: Background");
+            game.batch.draw(backgroundMap, 0, 0, backgroundMap.getWidth() * mapScale, backgroundMap.getHeight() * mapScale);
 
 
-        //Draw Infiltrator + Check for interaction
-        java.lang.System.out.println("DEBUG: Infil");
-        for (int i = 0; i < infiltrators.size(); i++) {
-            game.batch.draw((infiltrators.get(i)).render(delta),(infiltrators.get(i)).getX(),(infiltrators.get(i)).getY(),playerWidth,playerHeight);
-            for (int j = 0; j < systemList.size(); j++) {
-                if(systemList.get(j).infiltratorInteract(infiltrators.get(i).getX(),infiltrators.get(i).getY())){
-                    //java.lang.System.out.println("InfilInteract");
+            java.lang.System.out.println("DEBUG: Systems");
+            //Draw Systems
+            for (int i = 0; i < systemList.size(); i++) {
+                game.batch.draw(systemList.get(i).render(delta), systemList.get(i).getX(), systemList.get(i).getY(), systemList.get(i).getWidth(), systemList.get(i).getHeight());
+            }
+
+
+            //Draw Infiltrator + Check for interaction
+            java.lang.System.out.println("DEBUG: Infil");
+            for (int i = 0; i < infiltrators.size(); i++) {
+                game.batch.draw((infiltrators.get(i)).render(delta), (infiltrators.get(i)).getX(), (infiltrators.get(i)).getY(), playerWidth, playerHeight);
+                for (int j = 0; j < systemList.size(); j++) {
+                    if (systemList.get(j).infiltratorInteract(infiltrators.get(i).getX(), infiltrators.get(i).getY())) {
+                        //java.lang.System.out.println("InfilInteract");
+                    }
                 }
             }
+
+
+            //Draw Player
+            java.lang.System.out.println("DEBUG: Player");
+            game.batch.draw(player.render(delta), player.getX(), player.getY(), playerWidth, playerHeight);
+
+
+            game.batch.end();
+            java.lang.System.out.println("DEBUG: END");
+
         }
-
-
-
-
-        //Draw Player
-        java.lang.System.out.println("DEBUG: Player");
-        game.batch.draw(player.render(delta), player.getX(),player.getY(),playerWidth,playerHeight);
-
-
-        game.batch.end();
-        java.lang.System.out.println("DEBUG: END");
-
-
     }
 
 
@@ -178,9 +204,10 @@ public class PlayerTest implements Screen {
     }
 
     private void inputLoop(){
-        if(Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             //Escape
-            quit();
+            paused = true;
+
         }
         if(Gdx.input.isKeyPressed(Input.Keys.E)) {
             //TODO: INTERACTION
@@ -238,10 +265,6 @@ public class PlayerTest implements Screen {
         return null;
     }
 
-    public void quit(){
-        game.setScreen(new MainMenuScreen(game));
-        dispose();
-    }
 
     public Fire fireTest;
     @Override
@@ -398,7 +421,7 @@ public class PlayerTest implements Screen {
 
 
 
-        cam = new OrthographicCamera(1920, 1080);
+        cam = new OrthographicCamera(MainGame.Game_Width, MainGame.Game_Height);
 
         cam.position.set(cam.viewportWidth / 2f, cam.viewportHeight / 2f, 0);
         cam.update();
@@ -407,7 +430,94 @@ public class PlayerTest implements Screen {
 
 
 
+        // Creating pause menu
+        Exit_Button_inactive = new Texture("buttons/exit_button.png");
+        Exit_Button_active = new Texture("buttons/exit_button_down.png");
+        Resume_inactive = new Texture("buttons/Resume.png");
+        Resume_active = new Texture("buttons/Resume_down.png");
 
+
+        gamePort = new FitViewport(MainGame.Game_Width,MainGame.Game_Height);
+        gamePort.apply();
+        stage = new Stage(gamePort);
+        skin = new Skin(Gdx.files.internal("uiskin.json"));
+
+
+        Texture texture = new Texture(Gdx.files.internal("bauhaus93_size72.png"));
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        font = new BitmapFont(Gdx.files.internal("bauhaus93_size72.fnt"), new TextureRegion(texture), false);
+        com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle labelStyle = new Label.LabelStyle();
+        labelStyle.font = font;
+        labelStyle.background = skin.newDrawable("white", 0.2f, 0.2f, 0.2f, 0.5f);
+
+
+        Label label1 = new Label("PAUSE",labelStyle);
+        label1.setSize(MainGame.Game_Width,MainGame.Game_Height);
+        label1.setPosition(0,0);
+        label1.setAlignment(Align.top);
+        stage.addActor(label1);
+
+        // exit button
+        final TextureRegion MyTextureRegion = new TextureRegion(Exit_Button_inactive);
+        Drawable drawable = new TextureRegionDrawable(MyTextureRegion);
+        final ImageButton Button = new ImageButton(drawable);
+        Button.setPosition(MainGame.Game_Width / 2 - 150,MainGame.Game_Height / 4);
+        Button.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+
+                ImageButton.ImageButtonStyle _oldStyle = Button.getStyle();
+                _oldStyle.imageUp = new TextureRegionDrawable(Exit_Button_active);
+                Button.setStyle(_oldStyle);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+
+                ImageButton.ImageButtonStyle _oldStyle = Button.getStyle();
+                _oldStyle.imageUp = new TextureRegionDrawable(Exit_Button_inactive);
+                Button.setStyle(_oldStyle);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                paused = false;
+                hide();
+                game.setScreen(new MainMenuScreen(game));
+            }
+        });
+
+        // resume button
+        final TextureRegion MyTextureRegion2 = new TextureRegion(Resume_inactive);
+        Drawable drawable1 = new TextureRegionDrawable(MyTextureRegion2);
+        final ImageButton Button2 = new ImageButton(drawable1);
+        Button2.setPosition(MainGame.Game_Width / 2 - 150,MainGame.Game_Height / 2);
+        Button2.addListener(new ClickListener(){
+            @Override
+            public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+
+                ImageButton.ImageButtonStyle _oldStyle = Button2.getStyle();
+                _oldStyle.imageUp = new TextureRegionDrawable(Resume_active);
+                Button2.setStyle(_oldStyle);
+            }
+
+            @Override
+            public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+
+                ImageButton.ImageButtonStyle _oldStyle = Button2.getStyle();
+                _oldStyle.imageUp = new TextureRegionDrawable(Resume_inactive);
+                Button2.setStyle(_oldStyle);
+            }
+
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                paused = false;
+            }
+        });
+
+        stage.addActor(Button2);
+        stage.addActor(Button);
+        Gdx.input.setInputProcessor(stage);
 
 
     }
@@ -435,7 +545,13 @@ public class PlayerTest implements Screen {
 
     @Override
     public void dispose() {
-
+        teleporter.dispose();
+        backgroundMap.dispose();
+        Exit_Button_inactive.dispose();
+        Exit_Button_active.dispose();
+        Resume_inactive.dispose();
+        Resume_active.dispose();
+        stage.dispose();
         textureAtlas.dispose();
     }
 }

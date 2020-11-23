@@ -32,9 +32,7 @@ public class HelpScreen implements Screen {
     private static final int R_X = 300;
 
     private Stage stage;
-    private Table table;
     private Skin skin;
-    private String Heading;
     BitmapFont font;
 
     Texture backgroundTexture;
@@ -68,8 +66,6 @@ public class HelpScreen implements Screen {
         labelStyle.background = skin.newDrawable("white", 0.2f, 0.2f, 0.2f, 0.8f);
 
 
-
-        table = new Table(skin);
 
         stage = new Stage(gamePort);
 
@@ -108,7 +104,7 @@ public class HelpScreen implements Screen {
                 " 'D'  -  Moving Right \n" +
                 " 'A'  -  Moving Left \n" +
                 " 'E'  -  Arrest enemy/Use Teleport \n" +
-                " 'ESC'  -  Quit"
+                " 'ESC'  -  Pause"
                 ,skin);
         label4.setSize(MainGame.Game_Width,MainGame.Game_Height/2);
         label4.setPosition(0,row_height/2);
