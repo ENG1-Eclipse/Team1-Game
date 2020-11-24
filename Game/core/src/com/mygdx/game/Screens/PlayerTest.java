@@ -80,10 +80,8 @@ public class PlayerTest implements Screen {
     final int mapScale = 4;
     @Override
     public void render (float delta) {
-        //---------------Camera-----------------//
-        // Update cam pos to center on the player
         if(paused) {
-            //Escape
+            //Pause menu
             stage.act(Gdx.graphics.getDeltaTime());
             stage.draw();
         }else {
@@ -94,20 +92,21 @@ public class PlayerTest implements Screen {
             java.lang.System.out.println("DEBUG: sysAssi()");
             systemAssignmentLoop();
 
+
+            Gdx.gl.glClearColor(0, 0, 0.06f, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+
+            game.batch.begin();
+
+            //---------------Camera-----------------//
+            // Update cam pos to center on the player
             java.lang.System.out.println("DEBUG: Camera");
             cam.position.x = player.getX() + playerWidth / 2;
             cam.position.y = player.getY() + playerHeight / 2;
             cam.update();
             game.batch.setProjectionMatrix(cam.combined);
 
-
-            Gdx.gl.glClearColor(0, 0, 0.06f, 1);
-
-
-            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-
-            game.batch.begin();
 
             game.batch.draw(teleporter, 500, MainGame.Game_Height / 2,
                     teleporter.getWidth() / 6, teleporter.getHeight() / 6);
@@ -146,8 +145,14 @@ public class PlayerTest implements Screen {
             game.batch.end();
             java.lang.System.out.println("DEBUG: END");
 
+
         }
+
     }
+
+
+
+
 
 
     private void systemAssignmentLoop(){
@@ -205,6 +210,7 @@ public class PlayerTest implements Screen {
         if(Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
             //Escape
             paused = true;
+
 
         }
         if(Gdx.input.isKeyPressed(Input.Keys.E)) {
@@ -461,8 +467,12 @@ public class PlayerTest implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 paused = false;
-                hide();
-                game.setScreen(new MainMenuScreen(game));
+                dispose();
+                Gdx.app.exit();
+                //game.setScreen(new MainMenuScreen(game));
+                //game.dispose();
+
+
             }
         });
 
