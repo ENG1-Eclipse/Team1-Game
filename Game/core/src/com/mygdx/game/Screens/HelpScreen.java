@@ -99,12 +99,10 @@ public class HelpScreen implements Screen {
         label3.setAlignment(Align.top);
         stage.addActor(label3);
 
-        Label label4 = new Label(" 'W'  -  Moving Up \n" +
-                " 'S'  -  Moving Down \n" +
-                " 'D'  -  Moving Right \n" +
-                " 'A'  -  Moving Left \n" +
-                " 'E'  -  Arrest enemy/Use Teleport \n" +
-                " 'ESC'  -  Pause"
+        Label label4 = new Label(" 'W'  -  Moving Up     'S'  -  Moving Down \n" +
+                " 'D'  -  Moving Right     'A'  -  Moving Left \n" +
+                " 'E'  -  Arrest enemy     'T'  -  Use Teleport \n" +
+                " 'ESC'  -  Pause\n"
                 ,skin);
         label4.setSize(MainGame.Game_Width,MainGame.Game_Height/2);
         label4.setPosition(0,row_height/2);
