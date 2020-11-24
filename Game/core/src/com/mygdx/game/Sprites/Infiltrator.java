@@ -9,6 +9,10 @@ import com.mygdx.game.Collision.CheatCollision;
 
 import java.util.ArrayList;
 
+/**
+ * The infiltrator class handles the rendering and moving of the various infiltrators in the game. Their AI is controlled
+ * by the UpdateMove, UpdateTarget, and UpdateTargetNodes
+ */
 public class Infiltrator {
     //Animation
     private TextureRegion textureRegion;

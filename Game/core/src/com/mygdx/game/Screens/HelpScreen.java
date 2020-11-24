@@ -23,6 +23,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MainGame;
 
+/**
+ * The HelpScreen class implements a screen that simply displays help information for the player
+ */
 public class HelpScreen implements Screen {
 
 
@@ -52,8 +55,12 @@ public class HelpScreen implements Screen {
 
     }
 
+    /**
+     * Displays the screen for the player, with the required information (controls and a brief description of the game)
+     */
     @Override
     public void show() {
+
         backgroundTexture = new Texture("parallax-space-background.jpg");
         Exit_Button_inactive = new Texture("buttons/exit_button.png");
         Exit_Button_active = new Texture("buttons/exit_button_down.png");

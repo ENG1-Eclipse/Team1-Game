@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MainGame;
 
+/**
+ * Implements a screen that allows the user to change various settings, for example the resolution.
+ */
 public class SettingsScreen implements Screen {
 
     private OrthographicCamera gamecam;

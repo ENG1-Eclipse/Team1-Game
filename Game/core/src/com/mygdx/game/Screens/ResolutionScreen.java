@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MainGame;
 
+/**
+ * Allows the user to change the resolution of the screen
+ */
 public class ResolutionScreen implements Screen {
 
     private OrthographicCamera gamecam;

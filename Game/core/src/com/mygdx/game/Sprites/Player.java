@@ -6,13 +6,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.mygdx.game.Collision.CheatCollision;
 import com.mygdx.game.MainGame;
+import com.mygdx.game.Screens.GameScreen;
 import com.mygdx.game.Screens.MainMenuScreen;
-import com.mygdx.game.Screens.PlayerTest;
+import com.mygdx.game.Screens.GameScreen;
 import com.mygdx.game.Collision.*;
 
 import javax.swing.plaf.synth.SynthEditorPaneUI;
 
-
+/**
+ * A class for the player (Auber). This class handles rendering and moving the player and checks whether
+ * the player is colliding with anything.
+ */
 public class Player{
     private TextureRegion textureRegion;
     private TextureAtlas textureAtlas;
@@ -52,7 +56,13 @@ public class Player{
         xPos = x;
         yPos = y;
     }
+
+    /**
+     * Handles the rendering of the player's texture, allowing animation whether the player is moving
+     * or teleporting
+     */
     public TextureRegion render(float delta){
+
         time += delta;
 
         if(teleportingState == 1 || teleportingState == 3){
@@ -61,7 +71,7 @@ public class Player{
             if(teleportAnimation.isAnimationFinished(time)){
                 if(teleportingState == 1){
                     teleportingState = 2;
-                    int[] teleCoords = PlayerTest.teleportTo();
+                    int[] teleCoords = GameScreen.teleportTo();
                     setPos(teleCoords[0],teleCoords[1]);
                     teleport();
                 }else if(teleportingState == 3){
@@ -112,8 +122,15 @@ public class Player{
         animationInput = input;
     }
 
+    /**
+     * Method that checks whether the player is colliding with the map
+     *
+     * @param dx change of x position player must make
+     * @param dy change of y position player must make
+     */
     public void move(float dx,float dy){
         //TODO Add collision check and stop player from moving into the object
+
         if(coll.getPositionType((int)(xPos+dx+width/4),(int)(yPos+dy+height/8))!=0 && coll.getPositionType((int)(xPos+dx+width*3/4),(int)(yPos+dy+height/8))!=0 ){
             yPos += dy;
             xPos += dx;
@@ -121,7 +138,6 @@ public class Player{
         //java.lang.System.out.print(xPos);
         //java.lang.System.out.print(":");
         //java.lang.System.out.println(yPos);
-
     }
 
     public void interact(){
@@ -133,14 +149,16 @@ public class Player{
         teleportingState = teleportState;
     }
 
+    /**
+     * Handles teleporting of the player
+     *
+     *     teleportingStates
+     *         Not Teleporting = 0
+     *         Teleporting Out = 1
+     *         Blank           = 2
+     *         Teleporting In  = 3
+     */
     public void teleport(){
-        /*
-        teleportingStates
-            Not Teleporting = 0
-            Teleporting Out = 1
-            Blank           = 2
-            Teleporting In  = 3
-         */
         if(teleportingState==0) {
             teleportAnimation.setPlayMode(Animation.PlayMode.NORMAL);
             teleportingState = 1;

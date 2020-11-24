@@ -2,6 +2,9 @@ package com.mygdx.game.Sprites;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 
+/**
+ * Simple class to implement a system being on fire.
+ */
 public class Fire extends GameObject {
 
     public Fire(float x,float y){

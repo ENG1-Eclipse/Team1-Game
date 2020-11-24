@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * GameObject acts as a base class for a number of other objects to extend. It allows rendering and interaction with itself.
+ */
+
 public class GameObject {
     private float xPos,yPos,animationTime;
     private Animation<TextureRegion> animation;
