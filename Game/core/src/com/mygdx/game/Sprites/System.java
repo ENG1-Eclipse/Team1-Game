@@ -4,6 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * This class handles the systems throughout the game world. If an infiltrator interacts with one of the systems,
+ * it will be set on fire.
+ */
 public class System extends GameObject {
     private Fire fire;
     private boolean isWorking;

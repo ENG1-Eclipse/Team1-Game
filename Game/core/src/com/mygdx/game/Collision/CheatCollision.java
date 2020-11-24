@@ -3,6 +3,12 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.*;
 
+/**
+ * CheatCollision implements a collision detection system by using a sub-layer called 'collisionlayer' that is a simplified
+ * version of the game map. It has different colours to indicate what can and cannot be collided with. For example, black
+ * indicates an out of bounds area where white indicates an area the player and infiltrators can walk. These correlate with
+ * the space inside and outside of the spaceship.
+ */
 
 public class CheatCollision {
     private int mapScale;

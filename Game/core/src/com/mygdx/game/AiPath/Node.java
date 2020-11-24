@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class Node {
     /*
     Idea. Each node indicates a point the infiltrator can move to. Calling getNextNodeToTarget will find the next node to the target name. Limit of 20 nodes max travel
-
      */
     private ArrayList<Node> children;
     private String name;
@@ -32,7 +31,7 @@ public class Node {
     }
 
 
-    /*
+    /**
     Runs a depth first search to find the path to target.
     String Target: The name of the target node
     ArrayList<Node> history: null (internal use only)

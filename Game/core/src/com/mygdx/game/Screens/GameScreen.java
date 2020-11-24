@@ -34,7 +34,7 @@ import java.util.Objects;
 import java.util.Random;
 
 
-public class PlayerTest implements Screen {
+public class GameScreen implements Screen {
     private Stage stage;
     private Viewport gamePort;
     BitmapFont font;
@@ -68,7 +68,7 @@ public class PlayerTest implements Screen {
     public Player player;
 
     MainGame game;
-    public PlayerTest (MainGame game) {
+    public GameScreen (MainGame game) {
         this.game = game;
 
     }
