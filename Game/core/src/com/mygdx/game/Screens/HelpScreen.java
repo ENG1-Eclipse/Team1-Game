@@ -2,7 +2,6 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -23,9 +21,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.MainGame;
 
-/**
- * The HelpScreen class implements a screen that simply displays help information for the player
- */
+// Creating a screen for the Help Screen
 public class HelpScreen implements Screen {
 
 
@@ -55,12 +51,10 @@ public class HelpScreen implements Screen {
 
     }
 
-    /**
-     * Displays the screen for the player, with the required information (controls and a brief description of the game)
-     */
     @Override
     public void show() {
-
+        
+        //Adds a texture and buttons to the help screen
         backgroundTexture = new Texture("parallax-space-background.jpg");
         Exit_Button_inactive = new Texture("buttons/exit_button.png");
         Exit_Button_active = new Texture("buttons/exit_button_down.png");
@@ -76,6 +70,7 @@ public class HelpScreen implements Screen {
 
         stage = new Stage(gamePort);
 
+
         int row_height = MainGame.Game_Height/12;
         Label label1 = new Label("Game Story:",labelStyle);
         label1.setSize(MainGame.Game_Width,row_height);
@@ -83,7 +78,9 @@ public class HelpScreen implements Screen {
         label1.setAlignment(Align.center);
         label1.setAlignment(Align.top);
         stage.addActor(label1);
-
+        
+        
+        //Text to display on the help screen
         Label label2 = new Label("Deep Space Y is a space station on the outskirts of the galaxy, inhabited by humans and\n" +
                 "different species of aliens. You are Auber, the constable of the station, and your job is to\n" +
                 "enforce law and order. The space station has been recently infiltrated by a team of hostiles\n" +
@@ -101,28 +98,32 @@ public class HelpScreen implements Screen {
 
         Label label3 = new Label("Controls:",skin);
         label3.setSize(MainGame.Game_Width,row_height);
-        label3.setPosition(0,MainGame.Game_Height/2);
+        label3.setPosition(0,MainGame.Game_Height/2-row_height);
         label3.setAlignment(Align.center);
         label3.setAlignment(Align.top);
         stage.addActor(label3);
-
+        
+        // The second part of the text, showing the controls
         Label label4 = new Label(" 'W'  -  Moving Up     'S'  -  Moving Down \n" +
                 " 'D'  -  Moving Right     'A'  -  Moving Left \n" +
                 " 'E'  -  Arrest enemy     'T'  -  Use Teleport \n" +
                 " 'ESC'  -  Pause\n"
                 ,skin);
-        label4.setSize(MainGame.Game_Width,MainGame.Game_Height/2);
+        label4.setSize(MainGame.Game_Width,MainGame.Game_Height/2-row_height);
         label4.setPosition(0,row_height/2);
         label4.setAlignment(Align.left);
         label4.setAlignment(Align.top);
         label4.setWrap(true);
         stage.addActor(label4);
 
-
         final TextureRegion MyTextureRegion = new TextureRegion(Exit_Button_inactive);
         Drawable drawable = new TextureRegionDrawable(MyTextureRegion);
         final ImageButton Button = new ImageButton(drawable);
-        Button.setPosition(MainGame.Game_Width / 2 - R_X / 2,MainGame.Game_Height / 8);
+
+        Button.setPosition(MainGame.Game_Width / 2 - R_X / 2,MainGame.Game_Height / 14);
+
+        
+        // Check if button is clicked
         Button.addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -142,6 +143,7 @@ public class HelpScreen implements Screen {
 
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                // Go back to the home screen
                 game.setScreen(new MainMenuScreen(game));
             }
         });
@@ -191,6 +193,10 @@ public class HelpScreen implements Screen {
 
     @Override
     public void dispose() {
+        Exit_Button_active.dispose();
+        Exit_Button_active.dispose();
+        backgroundTexture.dispose();
+        skin.dispose();
         stage.dispose();
     }
 }

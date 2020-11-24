@@ -62,6 +62,8 @@ public class SettingsScreen implements Screen {
 
 
         stage = new Stage(gamePort);
+
+        //creating EXIT button
         final TextureRegion MyTextureRegion = new TextureRegion(Exit_Button_inactive);
         Drawable drawable = new TextureRegionDrawable(MyTextureRegion);
         final ImageButton Button = new ImageButton(drawable);
@@ -89,7 +91,7 @@ public class SettingsScreen implements Screen {
             }
         });
 
-
+        //creating resolution button
         final TextureRegion MyTextureRegion2 = new TextureRegion(Resolution_inactive);
         Drawable drawable1 = new TextureRegionDrawable(MyTextureRegion2);
         final ImageButton Button2 = new ImageButton(drawable1);
@@ -164,6 +166,11 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void dispose() {
+        Resolution_inactive.dispose();
+        Resolution_active.dispose();
+        Exit_Button_inactive.dispose();
+        Exit_Button_active.dispose();
+        backgroundTexture.dispose();
         stage.dispose();
 
     }
