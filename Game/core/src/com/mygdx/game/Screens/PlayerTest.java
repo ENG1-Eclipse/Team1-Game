@@ -524,6 +524,8 @@ public class PlayerTest implements Screen {
 
     @Override
     public void dispose() {
+        skin.dispose();
+        font.dispose();
         teleporter.dispose();
         backgroundMap.dispose();
         Exit_Button_inactive.dispose();

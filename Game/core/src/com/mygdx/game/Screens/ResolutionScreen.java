@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -27,6 +28,10 @@ public class ResolutionScreen implements Screen {
     private Skin skin;
 
 
+    Texture Exit_Button_inactive;
+    Texture Exit_Button_active;
+    Texture backgroundTexture;
+
 
 
     MainGame game;
@@ -37,6 +42,9 @@ public class ResolutionScreen implements Screen {
     @Override
     public void show() {
 
+        Exit_Button_inactive = new Texture("buttons/exit_button.png");
+        Exit_Button_active = new Texture("buttons/exit_button_down.png");
+        backgroundTexture = new Texture("parallax-space-background.jpg");
 
         gamecam = new OrthographicCamera();
         gamecam.position.set(MainGame.Game_Width,MainGame.Game_Height,0);
@@ -46,6 +54,7 @@ public class ResolutionScreen implements Screen {
 
         skin = new Skin(Gdx.files.internal("uiskin.json"));
 
+        //creating resolution buttons
         final TextButton Button1 = new TextButton("1920x1080", skin);
         Button1.addListener(new ClickListener(){
             @Override
@@ -89,7 +98,9 @@ public class ResolutionScreen implements Screen {
         table.add(Button3);
 
         stage = new Stage(gamePort);
-        final TextureRegion MyTextureRegion = new TextureRegion(SettingsScreen.Exit_Button_inactive);
+
+        //creating exit button
+        final TextureRegion MyTextureRegion = new TextureRegion(Exit_Button_inactive);
         Drawable drawable = new TextureRegionDrawable(MyTextureRegion);
         final ImageButton ExButton = new ImageButton(drawable);
         ExButton.setPosition(MainGame.Game_Width / 2 - 150,MainGame.Game_Height / 5);
@@ -98,7 +109,7 @@ public class ResolutionScreen implements Screen {
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
 
                 ImageButton.ImageButtonStyle _oldStyle = ExButton.getStyle();
-                _oldStyle.imageUp = new TextureRegionDrawable(SettingsScreen.Exit_Button_active);
+                _oldStyle.imageUp = new TextureRegionDrawable(Exit_Button_active);
                 ExButton.setStyle(_oldStyle);
             }
 
@@ -106,7 +117,7 @@ public class ResolutionScreen implements Screen {
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
 
                 ImageButton.ImageButtonStyle _oldStyle = ExButton.getStyle();
-                _oldStyle.imageUp = new TextureRegionDrawable(SettingsScreen.Exit_Button_inactive);
+                _oldStyle.imageUp = new TextureRegionDrawable(Exit_Button_inactive);
                 ExButton.setStyle(_oldStyle);
             }
 
@@ -129,7 +140,7 @@ public class ResolutionScreen implements Screen {
         game.batch.setProjectionMatrix(gamecam.combined);
         game.batch.begin();
 
-        game.batch.draw(SettingsScreen.backgroundTexture, 0, 0, MainGame.Game_Width, MainGame.Game_Height);
+        game.batch.draw(backgroundTexture, 0, 0, MainGame.Game_Width, MainGame.Game_Height);
 
         game.batch.end();
         stage.act(Gdx.graphics.getDeltaTime());
@@ -158,6 +169,9 @@ public class ResolutionScreen implements Screen {
 
     @Override
     public void dispose() {
+        Exit_Button_inactive.dispose();
+        Exit_Button_active.dispose();
+        backgroundTexture.dispose();
         stage.dispose();
         skin.dispose();
 

@@ -2,7 +2,6 @@ package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -54,6 +52,7 @@ public class HelpScreen implements Screen {
 
     @Override
     public void show() {
+
         backgroundTexture = new Texture("parallax-space-background.jpg");
         Exit_Button_inactive = new Texture("buttons/exit_button.png");
         Exit_Button_active = new Texture("buttons/exit_button_down.png");
@@ -68,6 +67,7 @@ public class HelpScreen implements Screen {
 
 
         stage = new Stage(gamePort);
+
 
         int row_height = MainGame.Game_Height/12;
         Label label1 = new Label("Game Story:",labelStyle);
@@ -94,7 +94,7 @@ public class HelpScreen implements Screen {
 
         Label label3 = new Label("Controls:",skin);
         label3.setSize(MainGame.Game_Width,row_height);
-        label3.setPosition(0,MainGame.Game_Height/2);
+        label3.setPosition(0,MainGame.Game_Height/2-row_height);
         label3.setAlignment(Align.center);
         label3.setAlignment(Align.top);
         stage.addActor(label3);
@@ -104,18 +104,17 @@ public class HelpScreen implements Screen {
                 " 'E'  -  Arrest enemy     'T'  -  Use Teleport \n" +
                 " 'ESC'  -  Pause\n"
                 ,skin);
-        label4.setSize(MainGame.Game_Width,MainGame.Game_Height/2);
+        label4.setSize(MainGame.Game_Width,MainGame.Game_Height/2-row_height);
         label4.setPosition(0,row_height/2);
         label4.setAlignment(Align.left);
         label4.setAlignment(Align.top);
         label4.setWrap(true);
         stage.addActor(label4);
 
-
         final TextureRegion MyTextureRegion = new TextureRegion(Exit_Button_inactive);
         Drawable drawable = new TextureRegionDrawable(MyTextureRegion);
         final ImageButton Button = new ImageButton(drawable);
-        Button.setPosition(MainGame.Game_Width / 2 - R_X / 2,MainGame.Game_Height / 8);
+        Button.setPosition(MainGame.Game_Width / 2 - R_X / 2,MainGame.Game_Height / 14);
         Button.addListener(new ClickListener(){
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
@@ -184,6 +183,10 @@ public class HelpScreen implements Screen {
 
     @Override
     public void dispose() {
+        Exit_Button_active.dispose();
+        Exit_Button_active.dispose();
+        backgroundTexture.dispose();
+        skin.dispose();
         stage.dispose();
     }
 }
